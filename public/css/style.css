@@ -255,6 +255,11 @@ body > .app, .profile {
     justify-content: end;
 }
 
+.feed .feed-content .feed-card .feed-owner .follow-action button {
+    width: 40%;
+    font-size: 1.05rem;
+}
+
 .feed .feed-content .feed-card .feed-card-content {
     width: 100%;
     height: 100%;

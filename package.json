@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npx tsc -w \" \"nodemon server.js\" "
+    "start": "concurrently \"npx tsc -w \" \"nodemon server.js\" ",
+    "addgit": "concurrently \"git add . \" \"git add .gitignore\" \" \" ",
+    "pushgit": "git push -u origin"
   },
   "author": "philly",
   "license": "ISC",

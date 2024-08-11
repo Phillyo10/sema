@@ -26,21 +26,27 @@ async function getpostcomments(filter:object) {
 }
 
 indexRequestsRouter.post("/allposts", (request, response) => {
-    postsDb.find({}, async (data:any, err:any) => {
-        if (!err) {
-            const allpostdata: any[] = []
-            for (let i = 0; i < data.length; i++) {
-                let likes = await getpostlikes({ postid: data[i].postid })
-                let comments = await getpostcomments({ postid: data[i].postid })
-                let postdata = data[i]
-                postdata.likes = likes
-                postdata.comments = comments
-                allpostdata.push(postdata)
-            }
-            allpostdata.reverse()
-            response.send(JSON.stringify(allpostdata))
-        } else response.send("fail")
-    })
+    let userid = request.cookies["semauser"] as string | null
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        postsDb.find({}, async (data:any, err:any) => {
+            if (!err) {
+                const allpostdata: any[] = []
+                for (let i = 0; i < data.length; i++) {
+                    let likes = await getpostlikes({ postid: data[i].postid })
+                    let comments = await getpostcomments({ postid: data[i].postid })
+                    let postdata = data[i]
+                    postdata.likes = likes
+                    postdata.comments = comments
+                    postdata.loggedinuser = userid
+                    allpostdata.push(postdata)
+                }
+                allpostdata.reverse()
+                response.send(JSON.stringify(allpostdata))
+            } else response.send("fail")
+        })
+    }
 })
 
 indexRequestsRouter.post("/getuser", (request, response) => {
@@ -58,10 +64,11 @@ indexRequestsRouter.post("/togglelikepost", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     let like = request.body.like
     let postid = request.body.postid
+
     if (userid == "" || userid == null) {
         response.send("fail")
     } else {
-        if (like ==  true) {
+        if (like == 'true') {
             const likedata: PostLike = { userid: userid, postid: postid }
             likesDb.insert(likedata, (data:any, err:any) => {
                 if (!err) response.send("done"); else response.send("fail")

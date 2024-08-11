@@ -37,7 +37,7 @@ let commentHtml = (user: any, userpfppath: string, comment: string, postowner: s
     </div>`
 }
 
-let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], likecallback?: Function, repostcallback?: Function) => {
+let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], userliked: boolean, userreposted: boolean) => {
     return `
     <div class="feed-card">
         <div class="feed-owner">
@@ -53,9 +53,9 @@ let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], 
         <div class="feed-card-content">${post.post}</div>
         <div class="feed-date">${post.time} <i class="bi bi-dot"></i> ${post.date}</div>
         <div class="feed-actions">
-            <div class="like-btn" data-postid="${post.postid}" data-likes="${poststats[0]}" onclick="likebutton(this)">${poststats[0]} <i class="fa-regular fa-heart"></i></div>
+            <div class="like-btn ${(userliked) ? "liked" : ""}" data-postid="${post.postid}" data-likes="${poststats[0]}" onclick="likebutton(this)">${poststats[0]} <i class="fa-regular fa-heart"></i></div>
             <div class="comments-btn" data-postid="${post.postid}"  onclick="opencomments(this)">${poststats[1]} <i class="fa-regular fa-comment"></i></div>
-            <div class="retw-btn" data-postid="${post.postid}" onclick="retwbutton(this)">${poststats[2]} <i class="fa-solid fa-rotate"></i></div>
+            <div class="retw-btn ${(userreposted) ? "retw" : ""}" data-postid="${post.postid}" onclick="retwbutton(this)" data-retw="${poststats[2]}">${poststats[2]} <i class="fa-solid fa-rotate"></i></div>
         </div>
         <div class="feed-comments">
             <div class="add-comment">
@@ -119,6 +119,7 @@ function likebutton(element: HTMLElement) {
     const elementdata = element.dataset
     const postid = element.dataset.postid
     element.classList.toggle("liked")
+
     if (element.classList.contains("liked")) {
         $.post("/togglelikepost", { like: true, postid: postid }, (data, status) => {
             if (elementdata == null || element.dataset.likes == null) return
@@ -137,6 +138,10 @@ function likebutton(element: HTMLElement) {
 }
 
 function retwbutton(element: HTMLElement) {
+    if (element.dataset == null || element.dataset.likes == null) return
+    if (element.dataset.likes == "") return
+    const elementdata = element.dataset
+    const postid = element.dataset.postid
     element.classList.toggle("retw")
 }
 
@@ -222,13 +227,23 @@ function loadFeed() {
 
                 const likes = post.likes.length
                 const comments = post.comments.length
+
+                let userliked: boolean = false
+                for (let i = 0; i < post.likes.length; i++) {
+                    const user = post.likes[i];
+                    if (user.userid == post.loggedinuser) {
+                        userliked = true
+                        break;
+                    } else userliked = false
+                }
+                
                 const reposts = posts.reduce((total, value) => {
                     let additional = (value.repost == true && value.repostid == post.postid) ? 1 : 0
                     return total + additional
                 }, 0)
 
                 $.post(`/getuserpfp/${post.userid}`, {}, (pfppath, status) => {
-                    feedContent.innerHTML += postHtml(user, post, pfppath, [likes, comments, reposts])
+                    feedContent.innerHTML += postHtml(user, post, pfppath, [likes, comments, reposts], userliked, false)
                 })
             })
 
