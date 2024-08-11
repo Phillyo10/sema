@@ -1,7 +1,1 @@
-[
-    {"userid": "radars", "ar": "ak27", "version": "1.0"},
-    {"userid": "radars", "ar": "ak27", "version": "12.0"},
-    {"userid": "radars", "ar": "ak47", "version": "2.0"},
-    {"userid": "radars", "ar": "ak27", "version": "1.5"},
-    {"userid": "radars", "ar": "ak47", "version": "1.0"}
-]
+[{"userid":"radars","ar":"ak37","version":"12.0"},{"userid":"radars","ar":"ak47","version":"2.0"},{"userid":"radars","ar":"ak27","version":"1.5"},{"userid":"prof","ar":"ak17","version":"1.5"},{"userid":"prof","ar":"ak17","version":"1.5"}]
