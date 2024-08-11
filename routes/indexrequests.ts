@@ -60,7 +60,7 @@ indexRequestsRouter.post("/togglelikepost", (request, response) => {
     if (userid == "" || userid == null) {
         response.send("fail")
     } else {
-        if (like) {
+        if (like ==  true) {
             const likedata: PostLike = { userid: userid, postid: postid }
             likesDb.insert(likedata, (err, data) => {
                 if (!err) response.send("done"); else response.send("fail")
