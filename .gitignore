@@ -1,5 +1,14 @@
+
+# folders
 /node_modules
 /db
 /nedb
+
+#files
 *.js
 *.json
+
+#images
+*.png
+*.jpg
+*.jpeg
