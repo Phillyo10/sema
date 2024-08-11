@@ -45,7 +45,7 @@ profileRequestsRouter.post("/userstats", (request, response) => {
     if (userid == "" || userid == null) {
         response.send("fail")
     } else {
-        postsDb.find({ userid: userid }, (err:any, data:any) => {
+        postsDb.find({ userid: userid }, (data:any, err:any) => {
             if (!err) {
                 response.send(JSON.stringify([data.length, 0, 0]))
             }
@@ -103,8 +103,8 @@ profileRequestsRouter.post("/updateprofilenames", (request, response) => {
         let username = request.body.username
         usersDb.update(
             { userid: userid },
-            { $set: {dname: dname, username: username} },
-            { multi: false, upsert: false }, (err:any, data:any) => {
+            { dname: dname, username: username },
+            false, (data:any, err:any) => {
             if (!err) response.send("done")
         })
     }

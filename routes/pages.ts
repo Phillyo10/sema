@@ -14,7 +14,7 @@ mainPagesRouter.get("/", (request, response) => {
     if (userid == "" || userid == null) {
         response.redirect("/login")
     } else {
-        usersDb.findOne({ userid: userid }, (err, data) => {
+        usersDb.findOne({ userid: userid }, (data:any, err:any) => {
             if (!err) {
                 const userinfo: UserAuth = data;
                 const verified_checkmark = userinfo.verified ? `verified`:''

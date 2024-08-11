@@ -1,6 +1,6 @@
 
 const loginButton = document.getElementById("signinbtn") as HTMLButtonElement
-const errorAlert = document.querySelector("#alert")
+const errorAlert = document.querySelector<HTMLDivElement>("#alert")
 
 loginButton.addEventListener("click", () => {
     const username = document.querySelector<HTMLInputElement>("#username")

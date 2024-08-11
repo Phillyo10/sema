@@ -59,7 +59,7 @@ let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], 
         </div>
         <div class="feed-comments">
             <div class="add-comment">
-                <div class="text">No comments. Start the conversation</div>
+                <div class="text">Join the conversation</div>
                 <button class="grey-btn" onclick="addComment('${post.postid}', this)"><i class="bi bi-chat"></i> Add a comment</div>
             </div>
         </div>
@@ -142,10 +142,10 @@ function retwbutton(element: HTMLElement) {
 
 function addComment(postid: string, element: HTMLElement) {
     let inputmodal = new InputModal();
-    const feedcard = element.parentElement?.parentElement?.parentElement?.parentElement as HTMLElement | null
+    const feedcard = element.parentElement?.parentElement?.parentElement as HTMLElement | null
     if (feedcard == null) return
     if (feedcard.children == null) return
-    console.log(feedcard.children)
+    
     const openCommentsButton = feedcard.children[3].children[1] as HTMLButtonElement
     inputmodal.show("Add a Comment", (value: string) => {
         $.post("/createpostcomment", {
@@ -176,7 +176,7 @@ async function opencomments(element: HTMLElement) {
     feedcard?.classList.toggle("opencomments");
     if (feedcard?.classList.contains("opencomments")) {
         if (feedcard?.children[4] == null) return
-    
+
         let username_ownerpost = feedcard?.children[0].children[1].children[1].innerHTML as string | null
         if (username_ownerpost == null || element.parentElement == null) return
         if (feedcard == null) return
@@ -186,14 +186,14 @@ async function opencomments(element: HTMLElement) {
         
 
         const comments: any = await loadComments(postid) as any[] | null
+        console.log(comments)
         for (let i = 0; i < comments.length; i++) {
             const comment = comments[i]
             if (i == 0) feedComments.children[0].innerHTML = `
             <div class="add-comment">
-                <div class="text">No comments. Start the conversation</div>
+                <div class="text">Join the conversation</div>
                 <button class="grey-btn" onclick="addComment('${comment.postid}', this)"><i class="bi bi-chat"></i> Add a comment</div>
-            </div>
-        `;
+            </div>`;
             $.post("/getuser", { userid: comment.userid }, (data, status) => {
                 $.post(`/getuserpfp/${comment.userid}`, {}, (userpfp, status) => {
                     if (userpfp == "fail") return

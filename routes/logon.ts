@@ -22,7 +22,7 @@ logonRouter.post("/loginreq", (request, response) => {
     let username = request.body.username
     let password = request.body.pwd
     console.log([username, password])
-    usersDb.findOne({ username: username, password: password }, (err, data) => {
+    usersDb.findOne({ username: username, password: password }, (data:any, err:any) => {
         if (!err) {
             if (data) {
                 response.cookie("semauser", data.userid, {
@@ -31,7 +31,7 @@ logonRouter.post("/loginreq", (request, response) => {
                     path: "/"
                 })
                 response.send("granted")
-            }
+            } else response.send("fail")
         } else response.send("fail")
     })
 })
@@ -58,7 +58,7 @@ logonRouter.post("/signupreq", (request, response) => {
         verified: false
     }
     
-    usersDb.insert(user_auth, (err, data) => {
+    usersDb.insert(user_auth, (data:any, err:any) => {
         if (!err) {
             response.cookie("semauser", user_auth.userid, {
                 maxAge: 86400000,

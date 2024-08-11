@@ -11,7 +11,7 @@ indexRequestsRouter.use(cookieParser())
 
 async function getpostlikes(filter:object) {
     return new Promise((resolve) => {
-        likesDb.find(filter, (err1:any, likedata:any) => {
+        likesDb.find(filter, (likedata:any, err:any) => {
             resolve(likedata)
         })
     })
@@ -19,14 +19,14 @@ async function getpostlikes(filter:object) {
 
 async function getpostcomments(filter:object) {
     return new Promise((resolve) => {
-        commentsDb.find(filter, (err1:any, likedata:any) => {
+        commentsDb.find(filter, (likedata:any, err:any) => {
             resolve(likedata)
         })
     })
 }
 
 indexRequestsRouter.post("/allposts", (request, response) => {
-    postsDb.find({}, async (err:any, data:any) => {
+    postsDb.find({}, async (data:any, err:any) => {
         if (!err) {
             const allpostdata: any[] = []
             for (let i = 0; i < data.length; i++) {
@@ -37,6 +37,7 @@ indexRequestsRouter.post("/allposts", (request, response) => {
                 postdata.comments = comments
                 allpostdata.push(postdata)
             }
+            allpostdata.reverse()
             response.send(JSON.stringify(allpostdata))
         } else response.send("fail")
     })
@@ -112,6 +113,7 @@ indexRequestsRouter.post("/createpostcomment", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     let postid = request.body.postid
     let comment = request.body.comment
+    console.log([userid, postid, comment])
 
     if (userid == "" || userid == null) {
         response.send("fail")
@@ -140,7 +142,7 @@ indexRequestsRouter.post("/createpostcomment", (request, response) => {
 
 indexRequestsRouter.post("/loadcomments", (request, response) => {
     let postid = request.body.postid
-    commentsDb.find({ postid: postid }, (err:any, data:any) => {
+    commentsDb.find({ postid: postid }, (data:any, err:any) => {
         if (!err) {
             response.send(JSON.stringify(data));
         } else response.send("fail")
