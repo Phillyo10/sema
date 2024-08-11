@@ -1,7 +1,7 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import { UserAuth, Post, PostComment, PostLike } from '../types/types'
-import { postsDb, usersDb, commentsDb, likesDb } from '../nedb/db.config.js'
+import { postsDb, usersDb, commentsDb, likesDb } from '../mydb/db.config.js'
 import randomUserId from '../includes/userid.js'
 import randomPostId from '../includes/postid.js'
 import { currentDate, currentTime } from '../includes/date.js'
