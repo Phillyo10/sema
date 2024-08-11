@@ -1,0 +1,41 @@
+
+@keyframes alertmsg {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    10% {
+        transform: translateY(20vh);
+        opacity: 1;
+    }
+    90% {
+        transform: translateY(20vh);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .alertmsg {
+        position: fixed;
+        top: -15%;
+        padding: 15px 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 4px 8px #dadada48;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: white;
+        background-color: #111111;
+        opacity: 0;
+    }
+
+    .alertmsg.show {
+        animation: alertmsg 3s;
+    }
+}

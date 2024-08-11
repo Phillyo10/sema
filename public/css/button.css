@@ -1,0 +1,141 @@
+
+button {
+    cursor: pointer;
+    outline: none;
+}
+
+button.transparent-btn {
+    width: fit-content;
+    padding: 8px 15px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #000;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: start;
+    outline: none;
+    border: none;
+}
+
+button.blank-btn {
+    width: fit-content;
+    padding: 8px 15px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    background-color: #fff;
+    color: #0b69ff;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: start;
+    outline: none;
+}
+
+button.blank-btn.selected {
+    border: 1px solid #c8ddff;
+    background-color: #c8ddff;
+}
+
+button.blank-btn:hover {
+    border: 1px solid #e3eeff;
+    background-color: #e3eeff;
+}
+
+button.blank-solid-btn {
+    width: fit-content;
+    padding: 8px 15px;
+    border-radius: 10px;
+    border: 1px solid #0b69ff;
+    background-color: #0b69ff;
+    color: white;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: start;
+    outline: none;
+}
+
+button.blank-solid-btn:hover {
+    border: 1px solid #3d87ff;
+    background-color: #3d87ff;
+}
+
+button.solid-btn {
+    width: fit-content;
+    padding: 8px 15px;
+    border-radius: 10px;
+    border: 1px solid #0b69ff;
+    background-color: #0b69ff;
+    color: white;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+button.solid-btn:hover {
+    border: 1px solid #3d87ff;
+    background-color: #3d87ff;
+}
+
+button.grey-btn {
+    width: fit-content;
+    padding: 8px 15px;
+    border-radius: 10px;
+    color: black;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid #dfdfdf;
+    background-color: #dfdfdf;
+    outline: 1px solid transparent;
+    justify-content: center;
+}
+
+button.grey-btn:hover {
+    border: 1px solid #cacaca;
+    outline: 1px solid #cacaca;
+    background-color: #cacaca;
+}
+
+button.regular-btn {
+    width: fit-content;
+    padding: 8px 15px;
+    border-radius: 10px;
+    border: 1px solid #0b69ff;
+    outline: 2px solid transparent;
+    color: #0b69ff;
+    background-color: #fff;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+button.regular-btn:hover {
+    outline: 2px solid #0b69ff;
+    font-weight: 700;
+}
+
+button.login {
+    font-size: 1.2rem;
+    padding: 10px 25px;
+}
+
+button.w-100 {
+    width: 100%;
+}
+button.w-90 {
+    width: 100%;
+}
+button.w-80 {
+    width: 100%;
+}
+button.w-70 {
+    width: 100%;
+}
+button.w-60 {
+    width: 100%;
+}

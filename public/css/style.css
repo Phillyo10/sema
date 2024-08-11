@@ -1,0 +1,653 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap');
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: "Manrope";
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    background-color: #f2f7ff;
+    color: black;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Manrope";
+    transition: all 0.2s;
+}
+
+.bi-patch-check-fill {
+    color: #0062ff;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-thumb {
+    width: 5px;
+    height: 5px;
+    background-color: #36363648;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #36363688;
+    cursor: grabbing;
+}
+::-webkit-scrollbar-track {
+    width: 5px;
+    background-color: transparent;
+}
+
+body > .app, .profile {
+    width: 90%;
+    padding: 15px;
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid #f3f3f3;
+}
+
+.app {
+    display: flex;
+    gap: 10px;
+    height: 10vh;
+    margin-top: 10px;
+}
+
+.app .logo {
+    height: 100%;
+}
+
+.app .logo img {
+    aspect-ratio: 1/1;
+    height: calc(10vh - 30px);
+    width: calc(10vh - 30px);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.app .userinfo .name i {
+    display: none;
+}
+
+.app .userinfo .name.verified i {
+    display: contents;
+}
+
+.app .buttons {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+}
+
+.feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    height: calc(70vh - 20px);
+}
+
+.feed .feed-header {
+    width: 100%;
+    height: 10%;
+    padding: 15px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    padding: 15px;
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid #f3f3f3;
+}
+
+.feed .feed-header .feed-choice {
+    width: fit-content;
+    height: 100%;
+    padding: 10px;
+    font-size: 1.05rem;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.feed .feed-header .feed-choice:not(.selected):hover {
+    background-color: #eeeeee;
+    border-radius: 10px;
+}
+
+.feed .feed-header .feed-choice:not(.selected):active {
+    scale: 0.9;
+}
+
+.feed .feed-choice::after {
+    position: absolute;
+    content: '';
+    bottom: -20%;
+    left: 10px;
+    width: 0%;
+    height: 3px;
+    background-color: #428bff;
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.feed .feed-choice.selected {
+    font-weight: 900;
+    color: #428bff;
+}
+
+.feed .feed-choice.selected::after {
+    position: absolute;
+    content: '';
+    bottom: -20%;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: 3px;
+    background-color: #428bff;
+    border-radius: 10px;
+}
+
+.feed .feed-content {
+    width: 95%;
+    height: 90%;
+    padding: 20px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+}
+
+/* .feed .feed-content::before {
+    position: sticky;
+    content: '';
+    box-sizing: border-box;
+    display: block;
+    top: -4%;
+    left: 0;
+    width: 100%;
+    padding: 2vh;
+    background: linear-gradient(to bottom, #f2f7ff, transparent);
+} */
+
+.feed .feed-content::after {
+    position: sticky;
+    content: '';
+    box-sizing: border-box;
+    display: block;
+    bottom: -4%;
+    left: 0;
+    width: 100%;
+    padding: 2vh;
+    background: linear-gradient(to top, #f2f7ff, transparent);
+}
+
+.feed .feed-content .feed-card {
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid #f3f3f3;
+}
+
+.feed .feed-content .feed-card > div {
+    width: 100%;
+}
+
+.feed .feed-content .feed-card .feed-owner {
+    width: 100%;
+    height: 8vh;
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+}
+
+.feed .feed-content .feed-card .feed-owner .image img {
+    height: 100%;
+    width: calc(8vh - 20px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+
+.feed .feed-content .feed-card .feed-owner .userinfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.feed .feed-content .feed-card .feed-owner .userinfo .name {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.feed .feed-content .feed-card .feed-owner .userinfo .username {
+    display: flex;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #363636;
+}
+
+.feed .feed-content .feed-card .feed-owner .follow-action {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.feed .feed-content .feed-card .feed-card-content {
+    width: 100%;
+    height: 100%;
+    line-height: 1.5rem;
+    padding: 10px;
+}
+
+.feed .feed-content .feed-card .feed-date {
+    width: 100%;
+    font-size: 0.85rem;
+    color: #363636;
+    padding: 0 0 5px 10px;
+}
+
+.feed .feed-content .feed-card .feed-actions {
+    width: 100%;
+    color: #363636;
+    padding: 15px 0;
+    font-size: 1.05rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feed .feed-content .feed-card .feed-actions > div {
+    width: fit-content;
+    padding: 7px 15px;
+    gap: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.feed .feed-content .feed-card .feed-actions > div:hover {
+    background-color: #f3f3f3;
+    border-radius: 10px;
+}
+
+.feed .feed-content .feed-card .feed-actions > div:active {
+    scale: 0.9;
+}
+
+.feed-card .feed-actions > div.liked {
+    color: #ff1176;
+    font-weight: 800;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+}
+
+.feed-card .feed-actions > div.like-btn i {
+    color: inherit;
+    font-weight: inherit;
+}
+
+@keyframes likeanimation {
+    0% {
+        transform: translateY(0px);
+        scale: 1;
+    }
+    50% {
+        transform: translateY(-20px);
+        scale: 1.5;
+    }
+    100% {
+        transform: translateY(0px);
+        scale: 1;
+    }
+}
+
+.feed-card .feed-actions > div.liked i {
+    background: linear-gradient(to bottom, #ff1176, #ff1837);
+    background-clip: text;
+    color: transparent;
+    animation: likeanimation 1s;
+}
+
+.feed-card .feed-actions > div.retw {
+    color: #ffb011;
+    font-weight: 800;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+}
+
+@keyframes retwanimation {
+    0% {
+        transform: rotate(0deg)
+    }
+    50% {
+        transform: rotate(180deg)
+    }
+    100% {
+        transform: rotate(0px);
+    }
+}
+
+.feed-card .feed-actions > div.retw i {
+    color: #ffb011;
+    animation: retwanimation 1s;
+}
+
+.feed-card .feed-actions > div:nth-child(2) i {
+    background: linear-gradient(to bottom, #0062ff, #1d74ff);
+    background-clip: text;
+    color: #000;
+    font-weight: inherit;
+}
+
+.feed-card.opencomments .feed-actions > div:nth-child(2) {
+    color: #0062ff;
+    font-weight: 800;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+}
+
+.feed-card.opencomments .feed-actions > div:nth-child(2) i {
+    background: linear-gradient(to bottom, #0062ff, #1d74ff);
+    background-clip: text;
+    color: transparent;
+}
+
+.feed .feed-content .feed-card .feed-comments {
+    display: none;
+}
+
+.feed-card.opencomments .feed-comments .add-comment {
+    width: 100%;
+    padding: 5px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feed-card.opencomments .feed-comments .add-comment .text {
+    width: 100%;
+    font-size: 1.1rem;
+}
+
+.feed-card.opencomments .feed-comments .add-comment button {
+    width: 60%;
+    font-size: 1rem;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 0 20px 15px;
+    border-left: 1px solid #dfdfdf;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment:last-child {
+    border-bottom: 1px solid transparent;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    height: 6vh;
+    padding: 6px;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .image {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .image img {
+    height: calc(6vh - 12px);
+    width: calc(6vh - 12px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .userinfo {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .userinfo > div {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 50%;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .userinfo > div:not(:last-child) {
+    font-weight: 700;
+    display: flex;
+    gap: 8px;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .userinfo > div:last-child {
+    font-size: 0.85rem;
+    color: #363636;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment {
+    font-size: 0.92rem;
+    padding: 0 10px;
+}
+
+.profile {
+    height: 15vh;
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+}
+
+.profile > div {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile .userinfo .name {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.profile .userinfo .name i {
+    display: none;
+}
+
+.profile .userinfo .name.verified i {
+    display: contents;
+}
+
+.profile .userinfo .username {
+    color: #363636;
+}
+
+@media screen and (min-width: 900px) {
+    body {
+        width: 100vw;
+        height: 100vh;
+        font-family: "Manrope";
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: start;
+        justify-content: center;
+        background-color: #f2f7ff;
+        color: black;
+    }
+
+    body > .feed {
+        width: 40vw;
+        padding: 15px;
+        height: 100%;
+    }
+
+    body > .app {
+        width: 15vw;
+        padding: 15px;
+        background-color: white;
+        border-radius: 20px;
+        border: 1px solid #f3f3f3;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        height: fit-content;
+        margin-top: 15px;
+        position: relative;
+    }
+
+    .app .logo {
+        padding: 10px;
+        height: 6vh;
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        justify-content: center;
+    }
+
+    .app .logo img {
+        width: 6vh;
+        height: 100%;
+        aspect-ratio: 1/1;
+        width: auto;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .app .userinfo {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 15px;
+    }
+    
+    .app .userinfo .name {
+        font-size: 1.3rem;
+        font-weight: 750;
+    }
+
+    .app .buttons {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .app .buttons button {
+        width: 100%;
+        font-size: 1.1rem;
+    }
+
+    .feed .feed-header .feed-choice {
+        height: 80%;
+    }
+
+    .feed .feed-header input {
+        height: 80%;
+        width: 70%;
+        padding: 10px 15px;
+        font-size: 1rem;
+        border: 1px solid #eeeeee;
+        outline: 1px solid transparent;
+        outline: none;
+        border-radius: 10px;
+    }
+
+    .feed .feed-header input:focus {
+        border: 1px solid #0062ff;
+        outline: 1px solid #0062ff;
+    }
+
+    .feed .feed-choice::after {
+        position: absolute;
+        content: '';
+        bottom: 0;
+        left: 10px;
+        width: 0%;
+        height: 3px;
+        background-color: #428bff;
+        border-radius: 10px;
+        transition: all 0.2s;
+    }
+    
+    .feed .feed-choice.selected {
+        font-weight: 900;
+        color: #428bff;
+    }
+    
+    .feed .feed-choice.selected::after {
+        position: absolute;
+        content: '';
+        bottom: 0;
+        left: 10px;
+        width: calc(100% - 20px);
+        height: 3px;
+        background-color: #428bff;
+        border-radius: 10px;
+    }
+
+    .feed .feed-content .feed-card .feed-actions {
+        width: 100%;
+        color: #363636;
+        padding: 15px 0;
+        font-size: 1.05rem;
+        gap: 10px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+}
