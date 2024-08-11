@@ -45,7 +45,7 @@ indexRequestsRouter.post("/allposts", (request, response) => {
 indexRequestsRouter.post("/getuser", (request, response) => {
     const userid = request.body.userid
     if (userid == "" || userid == null) return
-    usersDb.findOne({ userid: userid }, (err, data) => {
+    usersDb.findOne({ userid: userid }, (data:any, err:any) => {
         if (!err) {
             const userinfo = data;
             response.send(JSON.stringify(userinfo))
@@ -62,12 +62,12 @@ indexRequestsRouter.post("/togglelikepost", (request, response) => {
     } else {
         if (like ==  true) {
             const likedata: PostLike = { userid: userid, postid: postid }
-            likesDb.insert(likedata, (err, data) => {
+            likesDb.insert(likedata, (data:any, err:any) => {
                 if (!err) response.send("done"); else response.send("fail")
             })
         } else {
             const likedata: PostLike = { userid: userid, postid: postid }
-            likesDb.remove(likedata, { multi: false }, (err, data) => {
+            likesDb.delete(likedata, (data:any, err:any) => {
                 if (!err) response.send("done"); else response.send("fail")
             })
         }
@@ -77,7 +77,7 @@ indexRequestsRouter.post("/togglelikepost", (request, response) => {
 indexRequestsRouter.post("/getuserc", (request, response) => {
     const userid = request.cookies["semauser"]
     if (userid == "" || userid == null) return
-    usersDb.findOne({ userid: userid }, (err, data) => {
+    usersDb.findOne({ userid: userid }, (data:any, err:any) => {
         if (!err) {
             const userinfo = data;
             response.send(JSON.stringify(userinfo))
@@ -102,7 +102,7 @@ indexRequestsRouter.post("/createpost", (request, response) => {
             repostid: ""
         }
     
-        postsDb.insert(newPost, (err, data) => {
+        postsDb.insert(newPost, (data:any, err:any) => {
             if (!err) response.send("done"); else response.send("fail")
         })
     }
@@ -116,9 +116,9 @@ indexRequestsRouter.post("/createpostcomment", (request, response) => {
     if (userid == "" || userid == null) {
         response.send("fail")
     } else {
-        postsDb.findOne({ postid: postid }, (err, postdata) => {
+        postsDb.findOne({ postid: postid }, (postdata:any, err:any) => {
             if (err) return
-            usersDb.findOne({ userid: userid }, (err, userdata) => {
+            usersDb.findOne({ userid: userid }, (userdata:any, err:any) => {
                 if (err) return
                 if (userdata && postdata) {
                     let user: UserAuth = userdata;
@@ -129,7 +129,7 @@ indexRequestsRouter.post("/createpostcomment", (request, response) => {
                         comment: comment
                     }
 
-                    commentsDb.insert(newPostComment, (err, data) => {
+                    commentsDb.insert(newPostComment, (data:any, err:any) => {
                         if (!err && data) response.send("posted"); else response.send("fail")
                     })
                 } else return
