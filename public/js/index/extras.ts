@@ -22,3 +22,14 @@ async function getUserPfp(userid: string) {
         })
     })
 }
+
+async function makerepost(post: any, postid: any) {
+    return new Promise((resolve) => {
+        $.post(`/createrepost`, {
+            post: post,
+            repostid: postid
+        }, (data, status) => {
+            resolve(data)
+        })
+    })
+}

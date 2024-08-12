@@ -54,7 +54,9 @@ let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], 
         <div class="feed-date">${post.time} <i class="bi bi-dot"></i> ${post.date}</div>
         <div class="feed-actions">
             <div class="like-btn ${(userliked) ? "liked" : ""}" data-postid="${post.postid}" data-likes="${poststats[0]}" onclick="likebutton(this)">${poststats[0]} <i class="fa-regular fa-heart"></i></div>
+
             <div class="comments-btn" data-postid="${post.postid}"  onclick="opencomments(this)">${poststats[1]} <i class="fa-regular fa-comment"></i></div>
+
             <div class="retw-btn ${(userreposted) ? "retw" : ""}" data-postid="${post.postid}" onclick="retwbutton(this)" data-retw="${poststats[2]}">${poststats[2]} <i class="fa-solid fa-rotate"></i></div>
         </div>
         <div class="feed-comments">
@@ -67,39 +69,53 @@ let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], 
     `
 }
 
-let repostHtml = () => {
+let repostHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], userliked: boolean, userreposted: boolean, repost: Post, repostuser: UserAuth, repostuserpfppath: string) => {
     return `
     <div class="feed-card">
         <div class="feed-owner">
-            <div class="image"><img src="imgs/default.png" alt=""></div>
+            <div class="image"><img src="${pfppath}" alt=""></div>
             <div class="userinfo">
-                <div class="name"><a onclick="">garry</a> <i class="bi bi-patch-check-fill"></i></div>
-                <div class="username">@garry</div>
+                <div class="name"><a onclick="">${user.dname}</a> ${(user.verified) ? `<i class="bi bi-patch-check-fill"></i>`: ''}</div>
+                <div class="username">@${user.username}</div>
             </div>
             <div class="follow-action">
                 <button class="solid-btn">Follow</button>
             </div>
         </div>
-        <div class="feed-card-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam perferendis molestiae repudiandae voluptatem nemo expedita minima sint deleniti fugit nesciunt.
-
+        <div class="feed-card-content">
+            ${post.post}
             <div class="repost-card full">
                 <div class="profile">
-                    <div class="image"><img src="imgs/pfps/f3s5vMt6j1lX.jpeg" alt=""></div>
+                    <div class="image"><img src="${repostuserpfppath}" alt=""></div>
                     <div class="userinfo">
-                        <div class="name">philly <i class="bi bi-patch-check-fill"></i></div>
-                        <div class="username">@philly</div>
+                        <div class="name">
+                            ${repostuser.dname} ${(repostuser.verified) ? `<i class="bi bi-patch-check-fill"></i>`: ''}
+                        </div>
+                        <div class="username">@${repostuser.username}</div>
                     </div>
                 </div>
-                <div class="post">Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque asperiores, quaerat neque, debitis corporis ducimus mollitia cum repellat at perspiciatis animi dignissimos iusto velit blanditiis reprehenderit totam laborum. Architecto incidunt dolor repellendus cupiditate, magni quas! Facilis modi dolore harum quisquam placeat, soluta mollitia officiis magnam sint eos quo est itaque illo hic eveniet tempore. Aut iste illum sapiente deserunt rem molestiae quaerat soluta, dolores maiores earum omnis minus, est alias ad veritatis saepe explicabo? Itaque veniam sed consectetur minus recusandae laudantium laboriosam? Sequi, saepe aspernatur provident illo, voluptatibus cum doloribus ratione eveniet accusamus, vero eos. Adipisci non iusto est quia.</div>
-                <div class="size-control"><a href="" style="color: blue;"><i class="fa-solid fa-chevron-up"></i> Show Less</a></div>
+                <div class="post">${repost.post}</div>
+                <div class="size-control">
+                    ${(repost.post.split(" ").length >= 30) ? `<a href="" style="color: blue;"><i class="fa-solid fa-chevron-up"></i> Show Less</a>` : ""}
+                </div>
             </div>
         </div>
-        <div class="feed-date"><span class="reposttxt">@garry reposted!</span> <i class="bi bi-dot"></i> 10:20am <i class="bi bi-dot"></i> 10 august 2024</div>
+
+        <div class="feed-date"><span class="reposttxt">@${user.username} reposted!</span> <i class="bi bi-dot"></i> ${post.time} <i class="bi bi-dot"></i> ${post.date}</div>
         <div class="feed-actions">
-            <div class="like-btn liked" data-postid="${post.postid}" data-likes="${poststats[0]}" onclick="likebutton(this)">2 <i class="fa-regular fa-heart"></i></div>
-            <div class="comments-btn" data-postid="${post.postid}" onclick="opencomments(this)">4 <i class="fa-regular fa-comment"></i></div>
-            <div class="retw-btn retw" data-postid="${post.postid}" onclick="retwbutton(this)" data-retw="${poststats[2]}">8 <i class="fa-solid fa-rotate"></i></div>
+            <div class="like-btn ${(userliked) ? "liked" : ""}" data-postid="${post.postid}" data-likes="${poststats[0]}" onclick="likebutton(this)">
+                ${poststats[0]} <i class="fa-regular fa-heart"></i>
+            </div>
+
+            <div class="comments-btn" data-postid="${post.postid}" onclick="opencomments(this)">
+                ${poststats[1]} <i class="fa-regular fa-comment"></i>
+            </div>
+
+            <div class="retw-btn ${(userreposted) ? "retw" : ""}" data-postid="${post.postid}" onclick="retwbutton(this)" data-retw="${poststats[2]}">
+                ${poststats[2]} <i class="fa-solid fa-rotate"></i>
+            </div>
         </div>
+
         <div class="feed-comments">
             <div class="add-comment">
                 <div class="text">Join the conversation</div>
@@ -152,9 +168,6 @@ searchbutton?.addEventListener("click", () => {
 const userProfileButton = document.querySelector<HTMLButtonElement>("#user-profile-btn");
 userProfileButton?.addEventListener("click", () => window.location.assign("/myprofile"))
 
-
-
-
 function likebutton(element: HTMLElement) {
     if (element.dataset == null || element.dataset.likes == null) return
     if (element.dataset.likes == "") return
@@ -190,11 +203,12 @@ function retwbutton(element: HTMLElement) {
     if (element.classList.contains("retw")) {
         element.classList.toggle("retw")
         let repostmodal = new InputRepostModal();
-        repostmodal.show(postid, (value: any, postid: any) => {
-            console.log([value, postid])
+        repostmodal.show(postid, async (value: any, postid: any, postowner: any) => {
+            await makerepost(value, postid).then((data) => {
+                if (data !== "fail") AlertMsg.show("good", `Reposted ${postowner}'s post!`); else AlertMsg.show("bad", "Failed to repost!")
+            })
         })
     }
-
 }
 
 function addComment(postid: string, element: HTMLElement) {
@@ -242,27 +256,70 @@ async function opencomments(element: HTMLElement) {
         
 
         const comments: any = await loadComments(postid) as any[] | null
-        console.log(comments)
         for (let i = 0; i < comments.length; i++) {
             const comment = comments[i]
-            if (i == 0) feedComments.children[0].innerHTML = `
+            if (i == 0) feedComments.innerHTML = `
             <div class="add-comment">
                 <div class="text">Join the conversation</div>
-                <button class="grey-btn" onclick="addComment('${comment.postid}', this)"><i class="bi bi-chat"></i> Add a comment</div>
+                <button class="grey-btn" onclick="addComment('${comment.postid}', this)">
+                    <i class="bi bi-chat"></i> Add a comment
+                </button>
             </div>`;
             $.post("/getuser", { userid: comment.userid }, (data, status) => {
                 $.post(`/getuserpfp/${comment.userid}`, {}, (userpfp, status) => {
                     if (userpfp == "fail") return
                     const user = JSON.parse(data)
-                    feedComments.children[0].innerHTML += `${commentHtml(user, userpfp, comment.comment, username_ownerpost)}`
+                    feedComments.innerHTML += `${commentHtml(user, userpfp, comment.comment, username_ownerpost)}`
                 })
             })
         }
     }
 }
 
+async function loadFeedPostInformation(feedContent: HTMLDivElement, posts: any, looppost: any) {
+    return new Promise((resolve) => {
+        $.post("/getuser", { userid: looppost.userid }, (userdata, status) => {
+            if (userdata == "fail") return;
+
+            const user: UserAuth = JSON.parse(userdata)
+            const post: any = looppost;
+
+            const likes = post.likes.length
+            const comments = post.comments.length
+
+            let userliked: boolean = false
+            for (let i = 0; i < post.likes.length; i++) {
+                const user = post.likes[i];
+                if (user.userid == post.loggedinuser) {
+                    userliked = true
+                    break;
+                } else userliked = false
+            }
+            
+            const reposts = posts.reduce((total: any, value: any) => {
+                let additional = (value.repost == true && value.repostid == post.postid) ? 1 : 0
+                return total + additional
+            }, 0)
+
+            $.post(`/getuserpfp/${post.userid}`, {}, async (pfppath, status) => {
+                if (post.repost == true) {
+                    const repost: any = await getPost(post.repostid)
+                    const repostuser: any = await getUser(repost.userid)
+                    const repostuserpfppath: any = await getUserPfp(repost.userid)
+
+                    feedContent.innerHTML += repostHtml(user, post, pfppath, [likes, comments, reposts], userliked, true, repost, repostuser, repostuserpfppath)
+                } else {
+                    feedContent.innerHTML += postHtml(user, post, pfppath, [likes, comments, reposts], userliked, false)
+                }
+            })
+
+            resolve("done")
+        })
+    })
+}
+
 function loadFeed() {
-    $.post("/allposts", {}, (data, status) => {
+    $.post("/allposts", {}, async (data, status) => {
         if (data == "fail") return;
         const feedContent = document.querySelector<HTMLDivElement>("#feed-content")
         if (feedContent == null) return;
@@ -270,36 +327,9 @@ function loadFeed() {
         const posts: any[] = JSON.parse(data)
 
         for (let i = 0; i < posts.length; i++) {
-            $.post("/getuser", { userid: posts[i].userid }, (userdata, status) => {
-                if (userdata == "fail") return;
-
-                const user: UserAuth = JSON.parse(userdata)
-                const post: any = posts[i];
-
-                const likes = post.likes.length
-                const comments = post.comments.length
-
-                let userliked: boolean = false
-                for (let i = 0; i < post.likes.length; i++) {
-                    const user = post.likes[i];
-                    if (user.userid == post.loggedinuser) {
-                        userliked = true
-                        break;
-                    } else userliked = false
-                }
-                
-                const reposts = posts.reduce((total, value) => {
-                    let additional = (value.repost == true && value.repostid == post.postid) ? 1 : 0
-                    return total + additional
-                }, 0)
-
-                $.post(`/getuserpfp/${post.userid}`, {}, (pfppath, status) => {
-                    feedContent.innerHTML += postHtml(user, post, pfppath, [likes, comments, reposts], userliked, false)
-                })
-            })
-
+            await loadFeedPostInformation(feedContent, posts, posts[i])
         }
     })
 }
 
-// loadFeed()
+loadFeed()

@@ -127,6 +127,30 @@ indexRequestsRouter.post("/createpost", (request, response) => {
     }
 })
 
+indexRequestsRouter.post("/createrepost", (request, response) => {
+    let userid = request.cookies["semauser"] as string | null
+    let post = request.body.post
+    let repostid = request.body.repostid
+
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        const newPost: Post = {
+            postid: randomPostId(),
+            userid: userid,
+            post: post,
+            time: currentTime(),
+            date: currentDate(),
+            repost: true,
+            repostid: repostid
+        }
+    
+        postsDb.insert(newPost, (data:any, err:any) => {
+            if (!err) response.send("done"); else response.send("fail")
+        })
+    }
+})
+
 indexRequestsRouter.post("/createpostcomment", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     let postid = request.body.postid

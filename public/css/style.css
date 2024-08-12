@@ -22,6 +22,22 @@ body {
     transition: all 0.2s;
 }
 
+.feed-card-content img {
+    cursor: pointer;
+}
+
+.feed-card-content img:active {
+    scale: 0.98;
+}
+
+.repost-card > .post > img {
+    cursor: pointer;
+}
+
+.repost-card > .post > img:active {
+    scale: 0.98;
+}
+
 .bi-patch-check-fill {
     color: #0062ff;
 }
@@ -269,6 +285,13 @@ body > .app {
     flex-direction: column;
 }
 
+.feed .feed-content .feed-card .feed-card-content > img {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px;
+}
+
 .feed .feed-content .feed-card .feed-card-content .repost-card {
     width: 100%;
     height: 21vh;
@@ -354,6 +377,13 @@ body > .app {
     display: block;
     height: 100%;
     box-sizing: border-box;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card.full > .post > img {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px;
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .size-control {

@@ -207,7 +207,7 @@ class InputRepostModal {
             const posttext = document.querySelector<HTMLDivElement>("#modalposttext");
             if (posttext?.innerHTML == "" || posttext == null) return
             closeModal()
-            callback(posttext.innerHTML, postinfo.postid);
+            callback(posttext.innerHTML, postinfo.postid, postuserinfo.username);
         })
     }
 }
