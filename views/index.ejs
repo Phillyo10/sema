@@ -28,16 +28,19 @@
             <div class="username">@<%= userinfo.username %></div>
         </div>
         <div class="buttons">
-            <button class="blank-btn selected" id="home-btn"><i class="fa-solid fa-house"></i> Home</button>
-            <button class="blank-btn" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
-            <button class="blank-btn" id="makepost-btn"><i class="fa-solid fa-circle-plus"></i> Post</button>
-            <button class="blank-btn" id="user-profile-btn"><i class="fa-solid fa-user-gear"></i> My Profile</button>
+            <button class="blank-btn selected" id="home-btn"><i class="fa-solid fa-house"></i><span> Home</span></button>
+            <button class="blank-btn" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i><span> Search</span></button>
+            <button class="blank-btn notification-btn" id="notifications-btn">
+                <i class="fa-solid fa-bell"></i><span> Notifications</span>
+                <div class="notifs">2</div>
+            </button>
+            <button class="blank-btn" id="makepost-btn"><i class="fa-solid fa-circle-plus"></i><span> Post</span></button>
+            <button class="blank-btn" id="user-profile-btn"><i class="fa-solid fa-user-gear"></i><span> My Profile</span></button>
         </div>
     </div>
     <div class="feed">
         <div class="feed-header" id="feed-header">
-            <div class="feed-choice"><i class="fa-regular fa-face-smile"></i> For You</div>
-            <div class="feed-choice selected"><i class="bi bi-broadcast"></i> Live Chat</div>
+            <div class="feed-choice"><i class="bi bi-broadcast"></i> Feed</div>
         </div>
         <div class="feed-content" id="feed-content"></div>
     </div>

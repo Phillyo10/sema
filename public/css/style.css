@@ -5,13 +5,14 @@ body {
     height: 100vh;
     font-family: "Manrope";
     margin: 0;
-    padding: 0;
+    padding: 10px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
     gap: 20px;
     align-items: center;
+    justify-content: start;
     background-color: #f2f7ff;
     color: black;
 }
@@ -20,6 +21,12 @@ body {
     box-sizing: border-box;
     font-family: "Manrope";
     transition: all 0.2s;
+}
+
+img {
+    outline: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .feed-card-content img {
@@ -42,6 +49,11 @@ body {
     color: #0062ff;
 }
 
+::selection {
+    background-color: #0062ff;
+    color: white;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -62,7 +74,7 @@ body {
 }
 
 body > .app {
-    width: 90%;
+    width: 95%;
     padding: 15px;
     background-color: white;
     border-radius: 20px;
@@ -70,30 +82,18 @@ body > .app {
 }
 
 .app {
+    order: 2;
     display: flex;
     gap: 10px;
     height: 10vh;
-    margin-top: 10px;
 }
 
 .app .logo {
-    height: 100%;
-}
-
-.app .logo img {
-    aspect-ratio: 1/1;
-    height: calc(10vh - 30px);
-    width: calc(10vh - 30px);
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.app .userinfo .name i {
     display: none;
 }
 
-.app .userinfo .name.verified i {
-    display: contents;
+.app .userinfo {
+    display: none;
 }
 
 .app .buttons {
@@ -104,12 +104,22 @@ body > .app {
     justify-content: end;
 }
 
-.feed {
+.app .buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app .buttons button span {
+    display: none;
+}
+
+body .feed {
+    width: 100%;
+    height: 70vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0px;
-    height: calc(70vh - 20px);
 }
 
 .feed .feed-header {
@@ -120,18 +130,16 @@ body > .app {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 90%;
-    padding: 15px;
-    background-color: white;
+    background-color: transparent;
     border-radius: 20px;
-    border: 1px solid #f3f3f3;
+    border: none;
 }
 
 .feed .feed-header .feed-choice {
     width: fit-content;
     height: 100%;
     padding: 10px;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     display: flex;
     gap: 10px;
     align-items: center;
@@ -140,49 +148,14 @@ body > .app {
     user-select: none;
     cursor: pointer;
     border-radius: 10px;
-}
-
-.feed .feed-header .feed-choice:not(.selected):hover {
-    background-color: #eeeeee;
-    border-radius: 10px;
-}
-
-.feed .feed-header .feed-choice:not(.selected):active {
-    scale: 0.9;
-}
-
-.feed .feed-choice::after {
-    position: absolute;
-    content: '';
-    bottom: -20%;
-    left: 10px;
-    width: 0%;
-    height: 3px;
-    background-color: #428bff;
-    border-radius: 10px;
-    transition: all 0.2s;
-}
-
-.feed .feed-choice.selected {
     font-weight: 900;
     color: #428bff;
-}
-
-.feed .feed-choice.selected::after {
-    position: absolute;
-    content: '';
-    bottom: -20%;
-    left: 10px;
-    width: calc(100% - 20px);
-    height: 3px;
-    background-color: #428bff;
-    border-radius: 10px;
 }
 
 .feed .feed-content {
     width: 95%;
     height: 90%;
-    padding: 20px;
+    padding: 0;
     overflow-y: scroll;
     overflow-x: hidden;
     display: flex;
@@ -190,18 +163,6 @@ body > .app {
     gap: 15px;
     position: relative;
 }
-
-/* .feed .feed-content::before {
-    position: sticky;
-    content: '';
-    box-sizing: border-box;
-    display: block;
-    top: -4%;
-    left: 0;
-    width: 100%;
-    padding: 2vh;
-    background: linear-gradient(to bottom, #f2f7ff, transparent);
-} */
 
 .feed .feed-content::after {
     position: sticky;
@@ -211,15 +172,17 @@ body > .app {
     bottom: -4%;
     left: 0;
     width: 100%;
-    padding: 2vh;
+    padding: 0;
     background: linear-gradient(to top, #f2f7ff, transparent);
 }
 
 .feed .feed-content .feed-card {
     width: 100%;
-    display: flex;
     padding: 10px;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 5px;
     background-color: white;
     border-radius: 20px;
     border: 1px solid #f3f3f3;
@@ -231,15 +194,20 @@ body > .app {
 
 .feed .feed-content .feed-card .feed-owner {
     width: 100%;
-    height: 8vh;
+    height: 9vh;
     display: flex;
-    padding: 10px;
+    padding: 8px;
     gap: 10px;
+}
+
+.feed .feed-content .feed-card .feed-owner .image {
+    width: 20%;
+    height: 100%;
+    text-align: center;
 }
 
 .feed .feed-content .feed-card .feed-owner .image img {
     height: 100%;
-    width: calc(8vh - 20px);
     aspect-ratio: 1;
     border-radius: 50%;
 }
@@ -247,19 +215,27 @@ body > .app {
 .feed .feed-content .feed-card .feed-owner .userinfo {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .feed .feed-content .feed-card .feed-owner .userinfo .name {
-    display: flex;
+    width: 100%;
+    height: fit-content;
     gap: 10px;
-    align-items: center;
+    display: flex;
+    align-items: end;
+    justify-content: start;
     font-size: 1.15rem;
     font-weight: 600;
 }
 
 .feed .feed-content .feed-card .feed-owner .userinfo .username {
+    width: 100%;
+    height: fit-content;
     display: flex;
-    gap: 10px;
+    align-items: start;
+    justify-content: start;
     font-size: 0.85rem;
     color: #363636;
 }
@@ -272,7 +248,7 @@ body > .app {
 }
 
 .feed .feed-content .feed-card .feed-owner .follow-action button {
-    width: 40%;
+    width: 60%;
     font-size: 1.05rem;
 }
 
@@ -295,11 +271,12 @@ body > .app {
 .feed .feed-content .feed-card .feed-card-content .repost-card {
     width: 100%;
     height: 21vh;
-    padding: 15px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
+    gap: 5px;
     border: 1px solid #eeeeee;
-    border-radius: 10px;
+    border-radius: 20px;
     margin: 15px 0 15px 0;
 }
 
@@ -312,13 +289,13 @@ body > .app {
     height: 6vh;
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 8px;
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .profile .image {
-    width: 15%;
+    width: 20%;
     height: 100%;
-    text-align: left;
+    text-align: center;
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .profile .image img {
@@ -330,17 +307,17 @@ body > .app {
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo {
-    width: 85%;
+    width: 80%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
+    align-items: center;
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo .name {
     width: 100%;
-    height: 50%;
+    height: fit-content;
     display: flex;
     justify-content: start;
     align-items: end;
@@ -350,18 +327,18 @@ body > .app {
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo .username {
     width: 100%;
-    height: 50%;
+    height: fit-content;
     display: flex;
     justify-content: start;
     align-items: start;
-    gap: 5px;
+    font-size: 0.85rem;
     color: #363636;
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .post {
     width: 100%;
     height: 11vh;
-    padding: 10px 0;
+    padding: 5px 0;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     line-clamp: 3;
@@ -408,7 +385,7 @@ body > .app {
 }
 
 .feed .feed-content .feed-card .feed-actions {
-    width: 100%;
+    width: 90%;
     color: #363636;
     padding: 15px 0;
     font-size: 1.05rem;
@@ -629,12 +606,14 @@ body > .app {
     }
 
     body > .feed {
+        order: 2;
         width: 40vw;
         padding: 15px;
         height: 100%;
     }
 
     body > .app {
+        order: 1;
         width: 15vw;
         padding: 15px;
         background-color: white;
@@ -693,7 +672,80 @@ body > .app {
 
     .app .buttons button {
         width: 100%;
-        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 10px;
+    }
+
+    .app .buttons button span {
+        display: block;
+    }
+
+    body .feed {
+        width: 40vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feed .feed-header {
+        width: 100%;
+        height: 10%;
+        padding: 15px;
+        gap: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        border-radius: 20px;
+        border: none;
+    }
+    
+    .feed .feed-header .feed-choice {
+        width: fit-content;
+        height: 100%;
+        padding: 10px;
+        font-size: 1.2rem;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        user-select: none;
+        cursor: pointer;
+        border-radius: 10px;
+        font-weight: 900;
+        color: #428bff;
+    }
+    
+    .feed .feed-content {
+        width: 95%;
+        height: 90%;
+        padding: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        position: relative;
+    }
+    
+    .feed .feed-content .feed-card {
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        background-color: white;
+        border-radius: 20px;
+        border: 1px solid #f3f3f3;
+    }
+    
+    .feed .feed-content .feed-card > div {
+        width: 100%;
     }
 
     .feed .feed-header .feed-choice {
@@ -744,6 +796,25 @@ body > .app {
         border-radius: 10px;
     }
 
+    .feed .feed-content .feed-card .feed-owner {
+        width: 100%;
+        height: 8vh;
+        display: flex;
+        padding: 8px;
+        gap: 10px;
+    }
+
+    .feed .feed-content .feed-card .feed-owner .image {
+        width: 10%;
+        height: 100%;
+        text-align: center;
+    }
+
+    .feed .feed-content .feed-card .feed-owner .follow-action button {
+        width: 40%;
+        font-size: 1.05rem;
+    }
+
     .feed .feed-content .feed-card .feed-actions {
         width: 100%;
         color: #363636;
@@ -753,5 +824,56 @@ body > .app {
         display: flex;
         justify-content: start;
         align-items: center;
+    }
+
+    .feed .feed-content .feed-card .feed-card-content .repost-card .profile {
+        width: 100%;
+        height: 6vh;
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+    }
+    
+    .feed .feed-content .feed-card .feed-card-content .repost-card .profile .image {
+        width: 10%;
+        height: 100%;
+        text-align: center;
+    }
+    
+    .feed .feed-content .feed-card .feed-card-content .repost-card .profile .image img {
+        height: 100%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    .feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo {
+        width: 90%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo .name {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: start;
+        align-items: end;
+        gap: 5px;
+        font-weight: 700;
+    }
+    
+    .feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo .username {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        font-size: 0.85rem;
+        color: #363636;
     }
 }

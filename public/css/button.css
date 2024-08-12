@@ -19,7 +19,8 @@ button.transparent-btn {
 }
 
 button.blank-btn {
-    width: fit-content;
+    width: 100%;
+    font-size: 1.1rem;
     padding: 8px 15px;
     border-radius: 10px;
     border: 1px solid #fff;
@@ -38,6 +39,49 @@ button.blank-btn.selected {
 }
 
 button.blank-btn:hover {
+    border: 1px solid #e3eeff;
+    background-color: #e3eeff;
+}
+
+button.blank-btn.notification-btn {
+    width: 100%;
+    padding: 8px 15px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    background-color: #fff;
+    color: #0b69ff;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    position: relative;
+}
+
+button.blank-btn.notification-btn .notifs {
+    position: absolute;
+    top: -10px;
+    right: 5px;
+    width: 2.7vh;
+    height: 2.7vh;
+    aspect-ratio: 1;
+    font-weight: 700;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    background-color: #c8ddff;
+    color: #0b69ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+button.blank-btn.notification-btn.selected {
+    border: 1px solid #c8ddff;
+    background-color: #c8ddff;
+}
+
+button.blank-btn.notification-btn:hover {
     border: 1px solid #e3eeff;
     background-color: #e3eeff;
 }
@@ -138,4 +182,49 @@ button.w-70 {
 }
 button.w-60 {
     width: 100%;
+}
+
+@media screen and (min-width: 900px) {
+    button.blank-btn.notification-btn {
+        width: 100%;
+        padding: 8px 15px;
+        border-radius: 10px;
+        border: 1px solid #fff;
+        background-color: #fff;
+        color: #0b69ff;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: start;
+        outline: none;
+        position: relative;
+    }
+    
+    button.blank-btn.notification-btn .notifs {
+        position: absolute;
+        top: calc(3vh - 2.25vh);
+        right: 10px;
+        width: 3vh;
+        height: 3vh;
+        aspect-ratio: 1;
+        font-weight: 700;
+        font-size: 0.8rem;
+        border-radius: 50%;
+        background-color: #0b69ff;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    button.blank-btn.notification-btn.selected {
+        border: 1px solid #c8ddff;
+        background-color: #c8ddff;
+    }
+    
+    button.blank-btn.notification-btn:hover {
+        border: 1px solid #e3eeff;
+        background-color: #e3eeff;
+    }
 }

@@ -95,9 +95,12 @@ let repostHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[]
                     </div>
                 </div>
                 <div class="post">${repost.post}</div>
+                ${(repost.post.split(" ").length >= 30) ? `
                 <div class="size-control">
-                    ${(repost.post.split(" ").length >= 30) ? `<a href="" style="color: blue;"><i class="fa-solid fa-chevron-up"></i> Show Less</a>` : ""}
-                </div>
+                    <a href="" style="color: blue;">
+                        <i class="fa-solid fa-chevron-up"></i> Show Less
+                    </a>
+                </div>` : ""}
             </div>
         </div>
 
@@ -146,10 +149,22 @@ homebutton?.addEventListener("click", () => {
     homebutton.classList.add("selected")
     const feedHeader = document.querySelector("#feed-header");
     if (feedHeader == null) return
-    feedHeader.innerHTML = `
-    <div class="feed-choice"><i class="fa-regular fa-face-smile"></i> For You</div>
-    <div class="feed-choice selected"><i class="bi bi-broadcast"></i> Live Chat</div>`;
+    feedHeader.innerHTML = `<div class="feed-choice"><i class="bi bi-broadcast"></i> Feed</div>`;
     loadFeed()
+})
+
+const notificationsbutton = document.querySelector<HTMLButtonElement>("#notifications-btn");
+notificationsbutton?.addEventListener("click", () => {
+    document.querySelector(".blank-btn.selected")?.classList.remove("selected")
+    notificationsbutton.classList.add("selected")
+
+    const feedContent = document.querySelector("#feed-content");
+    const feedHeader = document.querySelector("#feed-header");
+
+    if (feedHeader == null) return
+    if (feedHeader == null || feedContent == null) return
+    feedHeader.innerHTML = `<div class="feed-choice"><i class="fa-solid fa-bell"></i> Notifications</div>`;
+    feedContent.innerHTML = ""
 })
 
 const searchbutton = document.querySelector<HTMLButtonElement>("#search-btn");
