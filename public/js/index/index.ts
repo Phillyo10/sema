@@ -138,11 +138,20 @@ function likebutton(element: HTMLElement) {
 }
 
 function retwbutton(element: HTMLElement) {
-    if (element.dataset == null || element.dataset.likes == null) return
+    if (element.dataset == null || element.dataset.retw == null) return
     if (element.dataset.likes == "") return
+
     const elementdata = element.dataset
     const postid = element.dataset.postid
     element.classList.toggle("retw")
+
+    if (postid == "" || typeof postid !== "string") return
+    if (!element.classList.contains("retw")) return
+    let repostmodal = new InputRepostModal();
+    repostmodal.show(postid, (value: any) => {
+        console.log(value)
+    })
+
 }
 
 function addComment(postid: string, element: HTMLElement) {
@@ -173,7 +182,6 @@ async function loadComments(postid: string) {
         })
     })
 }
-
 
 async function opencomments(element: HTMLElement) {
     const postid = element.dataset.postid as string

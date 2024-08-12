@@ -45,7 +45,7 @@ body {
     background-color: transparent;
 }
 
-body > .app, .profile {
+body > .app {
     width: 90%;
     padding: 15px;
     background-color: white;
@@ -475,40 +475,6 @@ body > .app, .profile {
 .feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment {
     font-size: 0.92rem;
     padding: 0 10px;
-}
-
-.profile {
-    height: 15vh;
-    display: flex;
-    gap: 20px;
-    padding: 15px;
-}
-
-.profile > div {
-    height: 100%;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-}
-
-.profile .userinfo .name {
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-
-.profile .userinfo .name i {
-    display: none;
-}
-
-.profile .userinfo .name.verified i {
-    display: contents;
-}
-
-.profile .userinfo .username {
-    color: #363636;
 }
 
 @media screen and (min-width: 900px) {

@@ -49,6 +49,17 @@ indexRequestsRouter.post("/allposts", (request, response) => {
     }
 })
 
+indexRequestsRouter.post("/getpost/:postid", (request, response) => {
+    const postid = request.params.postid
+    if (postid == "" || postid == null) return
+    postsDb.findOne({ postid: postid }, (data:any, err:any) => {
+        if (!err) {
+            const postdata = data;
+            response.send(JSON.stringify(postdata))
+        } else response.send("fail")
+    })
+})
+
 indexRequestsRouter.post("/getuser", (request, response) => {
     const userid = request.body.userid
     if (userid == "" || userid == null) return
