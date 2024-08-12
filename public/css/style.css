@@ -265,13 +265,116 @@ body > .app {
     height: 100%;
     line-height: 1.5rem;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card {
+    width: 100%;
+    height: 21vh;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
+    margin: 15px 0 15px 0;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card.full {
+    height: fit-content;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .profile {
+    width: 100%;
+    height: 6vh;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .profile .image {
+    width: 15%;
+    height: 100%;
+    text-align: left;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .profile .image img {
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo {
+    width: 85%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo .name {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: start;
+    align-items: end;
+    gap: 5px;
+    font-weight: 700;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo .username {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 5px;
+    color: #363636;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .post {
+    width: 100%;
+    height: 11vh;
+    padding: 10px 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 1.5rem;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card.full > .post {
+    width: 100%;
+    padding: 15px 0;
+    display: block;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .size-control {
+    width: 100%;
+    height: 3vh;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: end;
 }
 
 .feed .feed-content .feed-card .feed-date {
     width: 100%;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #363636;
     padding: 0 0 5px 10px;
+}
+
+.feed .feed-content .feed-card .feed-date .reposttxt {
+    color: #0062ff;
+    font-weight: 700;
 }
 
 .feed .feed-content .feed-card .feed-actions {

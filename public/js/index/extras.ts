@@ -14,3 +14,11 @@ async function getUser(userid: string) {
         })
     })
 }
+
+async function getUserPfp(userid: string) {
+    return new Promise((resolve) => {
+        $.post(`/getuserpfp/${userid}`, {}, (data, status) => {
+            resolve(data)
+        })
+    })
+}

@@ -154,7 +154,7 @@ function isPostInfo(obj: any): obj is PostInfo {
            typeof obj.post === 'string' &&
            typeof obj.time === 'string' &&
            typeof obj.date === 'string' &&
-           typeof obj.repost === 'string' &&
+           typeof obj.repost === 'boolean' &&
            typeof obj.repostid === 'string';
 }
 
@@ -176,6 +176,8 @@ class InputRepostModal {
         let postuserinfo = await getUser(postinfo.userid)
         if (!isUser(postuserinfo)) return
         
+        const postuserProfilePicture = await getUserPfp(postuserinfo.userid)
+
         modal.innerHTML = `
         <div class="modal-post-box repost">
             <div class="title">RePosting: ${postuserinfo.dname}'s Post</div><br>
@@ -185,14 +187,14 @@ class InputRepostModal {
             <div class="repost-container">
                 <div class="profile">
                     <div class="image">
-                        <img src="imgs/1.png" alt="">
+                        <img src="${postuserProfilePicture}" alt="">
                     </div>
                     <div class="userinfo">
-                        <div class="name">hello</div>
-                        <div class="username">@world</div>
+                        <div class="name">${postuserinfo.dname}</div>
+                        <div class="username">@${postuserinfo.username}</div>
                     </div>
                 </div>
-                <div class="content">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, optio iusto rerum impedit quis, maxime et adipisci a sunt architecto aperiam laboriosam repellendus iste, quidem laudantium ab aut incidunt eligendi vero illum! Mollitia reiciendis et sint, nam optio laudantium quia veritatis distinctio similique cupiditate! Minima ratione quas corrupti facere nisi!</div>
+                <div class="content">${postinfo.post}</div>
             </div>
             <div class="buttons">
                 <button class="solid-btn" id="modalpostbtn">Post</button>
@@ -205,7 +207,7 @@ class InputRepostModal {
             const posttext = document.querySelector<HTMLDivElement>("#modalposttext");
             if (posttext?.innerHTML == "" || posttext == null) return
             closeModal()
-            callback(posttext.innerHTML);
+            callback(posttext.innerHTML, postinfo.postid);
         })
     }
 }

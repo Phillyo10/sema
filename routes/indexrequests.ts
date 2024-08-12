@@ -131,7 +131,6 @@ indexRequestsRouter.post("/createpostcomment", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     let postid = request.body.postid
     let comment = request.body.comment
-    console.log([userid, postid, comment])
 
     if (userid == "" || userid == null) {
         response.send("fail")

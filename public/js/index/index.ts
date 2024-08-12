@@ -67,6 +67,48 @@ let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], 
     `
 }
 
+let repostHtml = () => {
+    return `
+    <div class="feed-card">
+        <div class="feed-owner">
+            <div class="image"><img src="imgs/default.png" alt=""></div>
+            <div class="userinfo">
+                <div class="name"><a onclick="">garry</a> <i class="bi bi-patch-check-fill"></i></div>
+                <div class="username">@garry</div>
+            </div>
+            <div class="follow-action">
+                <button class="solid-btn">Follow</button>
+            </div>
+        </div>
+        <div class="feed-card-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam perferendis molestiae repudiandae voluptatem nemo expedita minima sint deleniti fugit nesciunt.
+
+            <div class="repost-card full">
+                <div class="profile">
+                    <div class="image"><img src="imgs/pfps/f3s5vMt6j1lX.jpeg" alt=""></div>
+                    <div class="userinfo">
+                        <div class="name">philly <i class="bi bi-patch-check-fill"></i></div>
+                        <div class="username">@philly</div>
+                    </div>
+                </div>
+                <div class="post">Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque asperiores, quaerat neque, debitis corporis ducimus mollitia cum repellat at perspiciatis animi dignissimos iusto velit blanditiis reprehenderit totam laborum. Architecto incidunt dolor repellendus cupiditate, magni quas! Facilis modi dolore harum quisquam placeat, soluta mollitia officiis magnam sint eos quo est itaque illo hic eveniet tempore. Aut iste illum sapiente deserunt rem molestiae quaerat soluta, dolores maiores earum omnis minus, est alias ad veritatis saepe explicabo? Itaque veniam sed consectetur minus recusandae laudantium laboriosam? Sequi, saepe aspernatur provident illo, voluptatibus cum doloribus ratione eveniet accusamus, vero eos. Adipisci non iusto est quia.</div>
+                <div class="size-control"><a href="" style="color: blue;"><i class="fa-solid fa-chevron-up"></i> Show Less</a></div>
+            </div>
+        </div>
+        <div class="feed-date"><span class="reposttxt">@garry reposted!</span> <i class="bi bi-dot"></i> 10:20am <i class="bi bi-dot"></i> 10 august 2024</div>
+        <div class="feed-actions">
+            <div class="like-btn liked" data-postid="${post.postid}" data-likes="${poststats[0]}" onclick="likebutton(this)">2 <i class="fa-regular fa-heart"></i></div>
+            <div class="comments-btn" data-postid="${post.postid}" onclick="opencomments(this)">4 <i class="fa-regular fa-comment"></i></div>
+            <div class="retw-btn retw" data-postid="${post.postid}" onclick="retwbutton(this)" data-retw="${poststats[2]}">8 <i class="fa-solid fa-rotate"></i></div>
+        </div>
+        <div class="feed-comments">
+            <div class="add-comment">
+                <div class="text">Join the conversation</div>
+                <button class="grey-btn" onclick="addComment('${post.postid}', this)"><i class="bi bi-chat"></i> Add a comment</div>
+            </div>
+        </div>
+    </div>`
+}
+
 const postButton = document.querySelector<HTMLButtonElement>("#makepost-btn");
 postButton?.addEventListener("click", () => {
     document.querySelector(".blank-btn.selected")?.classList.remove("selected")
@@ -141,16 +183,17 @@ function retwbutton(element: HTMLElement) {
     if (element.dataset == null || element.dataset.retw == null) return
     if (element.dataset.likes == "") return
 
-    const elementdata = element.dataset
     const postid = element.dataset.postid
     element.classList.toggle("retw")
 
     if (postid == "" || typeof postid !== "string") return
-    if (!element.classList.contains("retw")) return
-    let repostmodal = new InputRepostModal();
-    repostmodal.show(postid, (value: any) => {
-        console.log(value)
-    })
+    if (element.classList.contains("retw")) {
+        element.classList.toggle("retw")
+        let repostmodal = new InputRepostModal();
+        repostmodal.show(postid, (value: any, postid: any) => {
+            console.log([value, postid])
+        })
+    }
 
 }
 
@@ -259,4 +302,4 @@ function loadFeed() {
     })
 }
 
-loadFeed()
+// loadFeed()
