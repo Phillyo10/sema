@@ -154,7 +154,7 @@ homebutton?.addEventListener("click", () => {
 })
 
 const notificationsbutton = document.querySelector<HTMLButtonElement>("#notifications-btn");
-notificationsbutton?.addEventListener("click", () => {
+notificationsbutton?.addEventListener("click", async () => {
     document.querySelector(".blank-btn.selected")?.classList.remove("selected")
     notificationsbutton.classList.add("selected")
 
@@ -165,6 +165,9 @@ notificationsbutton?.addEventListener("click", () => {
     if (feedHeader == null || feedContent == null) return
     feedHeader.innerHTML = `<div class="feed-choice"><i class="fa-solid fa-bell"></i> Notifications</div>`;
     feedContent.innerHTML = ""
+
+    const notifications: string | any = await getUserNotifications()
+    console.log(notifications)
 })
 
 const searchbutton = document.querySelector<HTMLButtonElement>("#search-btn");

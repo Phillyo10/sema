@@ -9,6 +9,18 @@ import { currentDate, currentTime } from '../includes/date.js'
 export const notificationsRouter = express.Router()
 notificationsRouter.use(cookieParser())
 
+
+notificationsRouter.get("/notifications", (request, response) => {
+    let userid = request.cookies["semauser"] as string | null
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        notificationsDb.find({ receivinguser: userid }, (data: any, err: any) => {
+            if (!err) response.send(JSON.stringify(data)); else response.send("fail")
+        })
+    }
+})
+
 notificationsRouter.post("/post", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     if (userid == "" || userid == null) {

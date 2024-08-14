@@ -34,6 +34,14 @@ async function makerepost(post: any, postid: any) {
     })
 }
 
+async function getUserNotifications() {
+    return new Promise((resolve) => {
+        fetch("/notify/notifications").then((response) => {
+            (response.ok) ? resolve(response.json()) : resolve("fail")
+        })
+    })
+}
+
 async function sendRePostNotification(postid: any) {
     return new Promise((resolve) => {
         fetch("/notify/repost", {
