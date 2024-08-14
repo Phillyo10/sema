@@ -1,3 +1,10 @@
+async function isLoggedOnUser(userid: string) {
+    return new Promise((resolve) => {
+        $.post(`/checkuid`, {}, (data, status) => {
+            if (data == userid) resolve(true); else resolve(false)
+        })
+    })
+}
 
 async function getPost(postid: string) {
     return new Promise((resolve) => {
@@ -19,6 +26,23 @@ async function getUserPfp(userid: string) {
     return new Promise((resolve) => {
         $.post(`/getuserpfp/${userid}`, {}, (data, status) => {
             resolve(data)
+        })
+    })
+}
+
+// PFF means Posts Followers Following
+async function getUserPFFStats(userid: string) {
+    return new Promise((resolve) => {
+        $.post(`/userstats`, { userid: userid }, (data, status) => {
+            resolve(JSON.parse(data))
+        })
+    })
+}
+
+async function searchUsers(searchquery: string) {
+    return new Promise((resolve) => {
+        $.post(`/getuser`, { query: searchquery }, (data, status) => {
+            resolve(JSON.parse(data))
         })
     })
 }

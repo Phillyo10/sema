@@ -23,8 +23,8 @@ type PostComment = {
     comment: string
 }
 
-let userProfileOvw = (user: UserAuth, userpfp: string, userstats: any[]) => {
-    return `
+let userProfileOvw = async (feedContent: HTMLElement, user: UserAuth, userpfp: string, userstats: any[], usercheck: boolean) => {
+    let html = `
     <div class="profileovw">
         <div class="profile-bg"><img src="${userpfp}" id="pfp" alt="User Profile Picture"></div>
         <div class="profile-wrapper">
@@ -40,9 +40,10 @@ let userProfileOvw = (user: UserAuth, userpfp: string, userstats: any[]) => {
                 <div class="stat"><span class="value">${userstats[1]}</span> Followers</div>
                 <div class="stat"><span class="value">${userstats[2]}</span> Following</div>
             </div><br>
-            <button class="follow-btn" onclick="toggleFollowUser(this, '${user.userid}')">Follow</button>
+            ${(!usercheck) ? `<button class="follow-btn" onclick="toggleFollowUser(this, '${user.userid}')">Follow</button>` : `<button class="regular-btn" onclick="openMyProilePage()">My Profile</button>`}
         </div>
-    </div>`
+    </div>`;
+    feedContent.innerHTML = html
 }
 
 let commentHtml = (user: UserAuth, userpfppath: string, comment: string, postowner: string) => {
@@ -202,20 +203,26 @@ searchbutton?.addEventListener("click", () => {
     const feedHeader = document.querySelector("#feed-header");
     const feedContent = document.querySelector("#feed-content");
     if (feedHeader == null || feedContent == null) return
-    feedHeader.innerHTML = `
-    <input type="search" name="search" id="search-box" autocomplete="off" placeholder="What are you looking for? 👀">`;
+    feedHeader.innerHTML = `<input type="search" name="search" id="search-box" autocomplete="off" placeholder="What are you looking for? 👀">`;
     feedContent.innerHTML = ""
     document.querySelector<HTMLInputElement>("#search-box")?.focus()
 })
 
+const openMyProilePage = () => { window.location.assign("/myprofile") }
+
 const userProfileButton = document.querySelector<HTMLButtonElement>("#user-profile-btn");
-userProfileButton?.addEventListener("click", () => window.location.assign("/myprofile"))
+userProfileButton?.addEventListener("click", openMyProilePage)
 
 
 async function openUserProfile(userid: string) {
-    const feedContent = document.querySelector("#feed-content");
+    const feedContent = document.querySelector("#feed-content") as HTMLElement;
     if (feedContent == null) return
-    feedContent.innerHTML = userProfileOvw()
+    const user: UserAuth | any = await getUser(userid)
+    const userPffStats: any[] | any = await getUserPFFStats(userid)
+    const userpfp: string | any = await getUserPfp(userid)
+    const checkUser: boolean | any = await isLoggedOnUser(userid)
+    await userProfileOvw(feedContent, user, userpfp, userPffStats, checkUser)
+    await loadUserPosts()
 }
 
 async function toggleFollowUser(element: HTMLElement, userid: string) {
@@ -393,6 +400,20 @@ async function notificationChecker() {
         notificationBanner.style.display = "flex"
         notificationBanner.innerHTML = nm
     } else notificationBanner.style.display = "none"
+}
+
+function loadUserPosts() {
+    $.post("/alluserposts", {}, async (data, status) => {
+        if (data == "fail") return;
+
+        const feedContent = document.querySelector<HTMLDivElement>("#feed-content")
+        if (feedContent == null) return;
+
+        const posts: any[] = JSON.parse(data)
+        for (let i = 0; i < posts.length; i++) {
+            await loadFeedPostInformation(feedContent, posts, posts[i])
+        }
+    })
 }
 
 function loadFeed() {

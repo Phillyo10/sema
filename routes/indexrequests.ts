@@ -26,12 +26,45 @@ async function getpostcomments(filter:object) {
     })
 }
 
+indexRequestsRouter.post("/checkuid", (request, response) => {
+    let userid = request.cookies["semauser"] as string | null
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        response.send(`${userid}`)
+    }
+})
+
 indexRequestsRouter.post("/allposts", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     if (userid == "" || userid == null) {
         response.send("fail")
     } else {
         postsDb.find({}, async (data:any, err:any) => {
+            if (!err) {
+                const allpostdata: any[] = []
+                for (let i = 0; i < data.length; i++) {
+                    let likes = await getpostlikes({ postid: data[i].postid })
+                    let comments = await getpostcomments({ postid: data[i].postid })
+                    let postdata = data[i]
+                    postdata.likes = likes
+                    postdata.comments = comments
+                    postdata.loggedinuser = userid
+                    allpostdata.push(postdata)
+                }
+                allpostdata.reverse()
+                response.send(JSON.stringify(allpostdata))
+            } else response.send("fail")
+        })
+    }
+})
+
+indexRequestsRouter.post("/alluserposts", (request, response) => {
+    let userid = request.cookies["semauser"] as string | null
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        postsDb.find({userid:userid}, async (data:any, err:any) => {
             if (!err) {
                 const allpostdata: any[] = []
                 for (let i = 0; i < data.length; i++) {
@@ -189,4 +222,14 @@ indexRequestsRouter.post("/loadcomments", (request, response) => {
             response.send(JSON.stringify(data));
         } else response.send("fail")
     })
+})
+
+indexRequestsRouter.post("/searchusers", (request, response) => {
+    let userid = request.cookies["semauser"] as string | null
+    let searchquery = request.body.query
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        
+    }
 })
