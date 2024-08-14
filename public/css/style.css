@@ -13,6 +13,7 @@ body {
     gap: 20px;
     align-items: center;
     justify-content: start;
+    font-weight: 500;
     background-color: #f2f7ff;
     color: black;
 }
@@ -585,6 +586,298 @@ body .feed {
 .feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment {
     font-size: 0.92rem;
     padding: 0 10px;
+}
+
+.feed .feed-content .user-card {
+    width: 100%;
+    height: 12vh;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid #f3f3f3;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.feed .feed-content .user-card:hover {
+    background-color: #fcfcfc;
+}
+
+.feed .feed-content .user-card:active {
+    background-color: #f1f1f1;
+}
+
+.feed-content .user-card .image {
+    height: 100%;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.feed-content .user-card .image img {
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid #f3f3f3;
+}
+
+.feed-content .user-card .userinfo {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.feed-content .user-card .userinfo .name {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    align-items: center;
+}
+
+.feed-content .user-card .userinfo .username {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    color: #363636;
+}
+
+.feed-content .user-card .follow-action {
+    height: 100%;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.feed-content .user-card .follow-action button {
+    height: fit-content;
+    width: fit-content;
+}
+
+.feed .feed-content .notification {
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid #f3f3f3;
+    transition: all 0.2s;
+}
+
+.feed .feed-content .notification .icon {
+    width: 7%;
+    height: 100%;
+    text-align: center;
+}
+
+.feed .feed-content .notification.like .icon i {
+    font-size: 1.3rem;
+    background: linear-gradient(to right, #ff1176, #ff1837);
+    background-clip: text;
+    color: transparent;
+}
+
+.feed .feed-content .notification.repost .icon i {
+    font-size: 1.3rem;
+    background: #ffb011;
+    background-clip: text;
+    color: transparent;
+}
+
+.feed .feed-content .notification.follow .icon i {
+    font-size: 1.3rem;
+    background: linear-gradient(to right, #6f00ff, #ac7fff);
+    background-clip: text;
+    color: transparent;
+}
+
+.feed .feed-content .notification.comment .icon i {
+    font-size: 1.3rem;
+    background: linear-gradient(to right, #0062ff, #00a2ff);
+    background-clip: text;
+    color: transparent;
+}
+
+.feed .feed-content .notification.post .icon i {
+    font-size: 1.3rem;
+    background: #68ff11;
+    background-clip: text;
+    color: transparent;
+}
+
+.feed .feed-content .notification.unfollow .icon i {
+    font-size: 1.3rem;
+    background: linear-gradient(to right, #c20000, #ff2f2f);
+    background-clip: text;
+    color: transparent;
+}
+
+.feed .feed-content .notification .notification-content .taguser {
+    font-weight: 700;
+    color: #0062ff;
+    background-color: #eeeeee;
+    border-radius: 5px;
+    padding: 2px 5px 2px 5px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.feed .feed-content .notification .notification-content .taguser:hover {
+    background-color: #dfdfdf;
+}
+
+.feed .feed-content .notification .notification-content .taguser:active {
+    background-color: #f5f5f5;
+}
+
+.feed .feed-content .notification .notification-content .time {
+    color: #9b9b9b;
+}
+
+.feed .feed-content .profileovw {
+    width: 100%;
+    height: 80vh;
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid #f3f3f3;
+    transition: all 0.2s;
+    display: flex;
+    align-items: end;
+    position: relative;
+}
+
+.feed .feed-content .profileovw .profile-wrapper {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transform: translateZ(20px);
+}
+
+.feed .feed-content .profileovw button.transparent-btn {
+    font-size: 1.6rem;
+    padding: 30px 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.feed .feed-content .profileovw .profile-bg {
+    width: 100%;
+    height: 60%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.feed .feed-content .profileovw .profile-bg img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.5;
+    border-radius: 20px;
+    position: relative;
+}
+
+.feed .feed-content .profileovw .profile-bg::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 18px;
+    border: 1px solid white;
+    background: linear-gradient(20deg, white 30%, transparent);
+}
+
+.feed .feed-content .profileovw .profile-img {
+    width: 100%;
+    height: 15vh;
+    position: relative;
+}
+
+.feed .feed-content .profileovw .profile-img input {
+    display: none;
+}
+
+.feed .feed-content .profileovw .profile-img img {
+    height: 15vh;
+    width: 15vh;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid #f3f3f3;
+}
+
+.feed .feed-content .profileovw .userinfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.feed .feed-content .profileovw .userinfo .name {
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.feed .feed-content .profileovw .userinfo .username {
+    color: #5a5a5a;
+}
+
+.feed .feed-content .profileovw .stats {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.feed .feed-content .profileovw .stats .stat {
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.feed .feed-content .profileovw .stats .stat::after {
+    content: '';
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    opacity: 0;
+    position: absolute;
+    background-color: black;
+    transition: all 0.2s;
+}
+
+.feed .feed-content .profileovw .stats .stat:hover::after {
+    bottom: -3px;
+    opacity: 1;
+}
+
+.feed .feed-content .profileovw .stats .stat .value {
+    font-weight: 750;
 }
 
 @media screen and (min-width: 900px) {

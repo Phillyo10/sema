@@ -5,6 +5,7 @@ import { postsDb, usersDb, commentsDb, likesDb } from '../mydb/db.config.js'
 import randomUserId from '../includes/userid.js'
 import randomPostId from '../includes/postid.js'
 import { currentDate, currentTime } from '../includes/date.js'
+import axios from 'axios'
 
 export const indexRequestsRouter = express.Router()
 indexRequestsRouter.use(cookieParser())

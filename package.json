@@ -14,6 +14,7 @@
     "@types/cookie-parser": "^1.4.7",
     "@types/jquery": "^3.5.30",
     "@types/multer": "^1.4.11",
+    "axios": "^1.7.3",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.1.10",
     "express": "^4.19.2",

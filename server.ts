@@ -7,6 +7,7 @@ import { logonRouter } from './routes/logon.js'
 import { indexRequestsRouter } from './routes/indexrequests.js'
 import { mainPagesRouter } from './routes/pages.js'
 import { profileRequestsRouter } from './routes/profilerequests.js'
+import { notificationsRouter } from './routes/notifications.js'
 
 const app = express()
 
@@ -20,5 +21,6 @@ app.use("/", mainPagesRouter)
 app.use("/", logonRouter)
 app.use("/", indexRequestsRouter)
 app.use("/", profileRequestsRouter)
+app.use("/notify", notificationsRouter)
 
 app.listen(80)

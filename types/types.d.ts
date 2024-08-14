@@ -26,3 +26,10 @@ export type PostLike = {
     postid: string,
     userid: string
 }
+
+export type Notification = {
+    type: "post" | "repost" | "like" | "follow" | "unfollow" | "comment",
+    taguserid: string,
+    receivinguser: string,
+    time: number
+}

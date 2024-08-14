@@ -33,3 +33,39 @@ async function makerepost(post: any, postid: any) {
         })
     })
 }
+
+async function sendRePostNotification(postid: any) {
+    return new Promise((resolve) => {
+        fetch("/notify/repost", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ postid: postid }) 
+        }).then((response: any) => {
+            if (response.ok) resolve(true); else resolve(false)
+        })
+    })
+}
+
+async function sendLikePostNotification(postid: any) {
+    return new Promise((resolve) => {
+        fetch("/notify/likepost", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ postid: postid }) 
+        }).then((response: any) => {
+            if (response.ok) resolve(true); else resolve(false)
+        })
+    })
+}
+
+async function sendCommentPostNotification(postid: any) {
+    return new Promise((resolve) => {
+        fetch("/notify/commentpost", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ postid: postid }) 
+        }).then((response: any) => {
+            if (response.ok) resolve(true); else resolve(false)
+        })
+    })
+}

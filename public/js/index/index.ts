@@ -191,11 +191,12 @@ function likebutton(element: HTMLElement) {
     element.classList.toggle("liked")
 
     if (element.classList.contains("liked")) {
-        $.post("/togglelikepost", { like: true, postid: postid }, (data, status) => {
+        $.post("/togglelikepost", { like: true, postid: postid }, async (data, status) => {
             if (elementdata == null || element.dataset.likes == null) return
             if (elementdata.likes == undefined) return
             const likes = parseInt(elementdata.likes)
             element.innerHTML = `${likes+1} <i class="fa-regular fa-heart"></i>`
+            await sendLikePostNotification(postid)
         })
     } else {
         $.post("/togglelikepost", { like: false, postid: postid }, (data, status) => {
@@ -219,8 +220,11 @@ function retwbutton(element: HTMLElement) {
         element.classList.toggle("retw")
         let repostmodal = new InputRepostModal();
         repostmodal.show(postid, async (value: any, postid: any, postowner: any) => {
-            await makerepost(value, postid).then((data) => {
-                if (data !== "fail") AlertMsg.show("good", `Reposted ${postowner}'s post!`); else AlertMsg.show("bad", "Failed to repost!")
+            await makerepost(value, postid).then(async (data) => {
+                if (data !== "fail") {
+                    AlertMsg.show("good", `Reposted ${postowner}'s post!`)
+                    await sendRePostNotification(postid)
+                } else AlertMsg.show("bad", "Failed to repost!")
             })
         })
     }
@@ -237,11 +241,12 @@ function addComment(postid: string, element: HTMLElement) {
         $.post("/createpostcomment", {
             postid: postid,
             comment: value
-        }, (data, status) => {
+        }, async (data, status) => {
             if (data == "posted") {
                 openCommentsButton.click();
                 openCommentsButton.click();
                 AlertMsg.show("good", "Comment Added!");
+                await sendCommentPostNotification(postid)
             }else AlertMsg.show("bad", "There was a issue in adding your comment")
         })
     })
@@ -347,4 +352,4 @@ function loadFeed() {
     })
 }
 
-loadFeed()
+// loadFeed()

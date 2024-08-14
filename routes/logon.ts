@@ -21,7 +21,6 @@ logonRouter.get("/login", (request, response) => {
 logonRouter.post("/loginreq", (request, response) => {
     let username = request.body.username
     let password = request.body.pwd
-    console.log([username, password])
     usersDb.findOne({ username: username, password: password }, (data:any, err:any) => {
         if (!err) {
             if (data) {
