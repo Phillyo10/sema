@@ -34,6 +34,22 @@ async function makerepost(post: any, postid: any) {
     })
 }
 
+async function countUserNotifications() {
+    return new Promise((resolve) => {
+        $.post("/notify/countnotifications", {}, (data, status) => {
+            resolve(parseInt(data))
+        })
+    })
+}
+
+async function readAllUserNotifications() {
+    return new Promise((resolve) => {
+        $.post("/notify/readall", {}, (data:any, status:any) => {
+            (data) ? resolve(data) : resolve("fail")
+        })
+    })
+}
+
 async function getUserNotifications() {
     return new Promise((resolve) => {
         fetch("/notify/notifications").then((response) => {
@@ -74,6 +90,60 @@ async function sendCommentPostNotification(postid: any) {
             body: JSON.stringify({ postid: postid }) 
         }).then((response: any) => {
             if (response.ok) resolve(true); else resolve(false)
+        })
+    })
+}
+
+async function sendFollowUserNotification(following: any) {
+    return new Promise((resolve) => {
+        fetch("/notify/followuser", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userid: following }) 
+        }).then((response: any) => {
+            if (response.ok) resolve(true); else resolve(false)
+        })
+    })
+}
+
+async function sendUnFollowUserNotification(following: any) {
+    return new Promise((resolve) => {
+        fetch("/notify/unfollowuser", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userid: following }) 
+        }).then((response: any) => {
+            if (response.ok) resolve(true); else resolve(false)
+        })
+    })
+}
+
+async function followUser(following: string) {
+    return new Promise((resolve) => {
+        fetch("/follow/user", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ following: following }) 
+        }).then( async (response: any) => {
+            if (response.ok) {
+                await sendFollowUserNotification(following)
+                resolve(true);
+            } else resolve(false)
+        })
+    })
+}
+
+async function unfollowUser(following: string) {
+    return new Promise((resolve) => {
+        fetch("/follow/unfuser", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ following: following }) 
+        }).then( async (response: any) => {
+            if (response.ok) {
+                await sendUnFollowUserNotification(following)
+                resolve(true);
+            } else resolve(false)
         })
     })
 }

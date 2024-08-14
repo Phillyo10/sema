@@ -31,5 +31,11 @@ export type Notification = {
     type: "post" | "repost" | "like" | "follow" | "unfollow" | "comment",
     taguserid: string,
     receivinguser: string,
+    read: boolean,
     time: number
+}
+
+export type FollowState = {
+    userid: string,
+    following: string
 }

@@ -1,5 +1,6 @@
 function formatTime(milliseconds: number) {
     if (milliseconds < 1000) return "few moments ago"
+
     const seconds = Math.floor(milliseconds/1000)
     if (seconds < 60) return `${seconds}s ago`
 
@@ -21,11 +22,3 @@ function formatTime(milliseconds: number) {
     const years = Math.floor(months/12)
     return `${years} ${(years>1)?'years':'year'} ago`
 }
-
-
-console.log(formatTime(Date.now()))
-console.log(formatTime(Date.now() - 1000));
-console.log(formatTime(Date.now() - 100000));
-console.log(formatTime(Date.now() - 10000000));
-console.log(formatTime(Date.now() - 1000000000));
-console.log(formatTime(Date.now() - 31536000000)); 

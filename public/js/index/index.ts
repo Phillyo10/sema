@@ -23,10 +23,32 @@ type PostComment = {
     comment: string
 }
 
-let commentHtml = (user: any, userpfppath: string, comment: string, postowner: string) => {
+let userProfileOvw = (user: UserAuth, userpfp: string, userstats: any[]) => {
+    return `
+    <div class="profileovw">
+        <div class="profile-bg"><img src="${userpfp}" id="pfp" alt="User Profile Picture"></div>
+        <div class="profile-wrapper">
+            <div class="profile-img">
+                <img src="${userpfp}" id="pfp" alt="User Profile Picture">
+            </div>
+            <div class="userinfo">
+                <div class="name" id="main-dname">${user.dname}</div>
+                <div class="username" id="main-username">@${user.username}</div>
+            </div>
+            <div class="stats" id="stats">
+                <div class="stat"><span class="value">${userstats[0]}</span> posts</div>
+                <div class="stat"><span class="value">${userstats[1]}</span> Followers</div>
+                <div class="stat"><span class="value">${userstats[2]}</span> Following</div>
+            </div><br>
+            <button class="follow-btn" onclick="toggleFollowUser(this, '${user.userid}')">Follow</button>
+        </div>
+    </div>`
+}
+
+let commentHtml = (user: UserAuth, userpfppath: string, comment: string, postowner: string) => {
     return `
     <div class="feed-comment">
-        <div class="comment-owner">
+        <div class="comment-owner"  onclick="openUserProfile('${user.userid}')">
             <div class="image"><img src="${userpfppath}" alt=""></div>
             <div class="userinfo">
                 <div class="name"><a onclick="">${user.dname}</a> ${(user.verified) ? `<i class="bi bi-patch-check-fill"></i>`: ''}</div>
@@ -40,14 +62,11 @@ let commentHtml = (user: any, userpfppath: string, comment: string, postowner: s
 let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], userliked: boolean, userreposted: boolean) => {
     return `
     <div class="feed-card">
-        <div class="feed-owner">
+        <div class="feed-owner" onclick="openUserProfile('${user.userid}')">
             <div class="image"><img src="${pfppath}" alt=""></div>
             <div class="userinfo">
                 <div class="name"><a onclick="">${user.dname}</a> ${(user.verified) ? `<i class="bi bi-patch-check-fill"></i>`: ''}</div>
                 <div class="username">@${user.username}</div>
-            </div>
-            <div class="follow-action">
-                <button class="solid-btn">Follow</button>
             </div>
         </div>
         <div class="feed-card-content">${post.post}</div>
@@ -72,20 +91,17 @@ let postHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], 
 let repostHtml = (user:UserAuth, post:Post, pfppath: string, poststats: number[], userliked: boolean, userreposted: boolean, repost: Post, repostuser: UserAuth, repostuserpfppath: string) => {
     return `
     <div class="feed-card">
-        <div class="feed-owner">
+        <div class="feed-owner" onclick="openUserProfile('${user.userid}')">
             <div class="image"><img src="${pfppath}" alt=""></div>
             <div class="userinfo">
                 <div class="name"><a onclick="">${user.dname}</a> ${(user.verified) ? `<i class="bi bi-patch-check-fill"></i>`: ''}</div>
                 <div class="username">@${user.username}</div>
             </div>
-            <div class="follow-action">
-                <button class="solid-btn">Follow</button>
-            </div>
         </div>
         <div class="feed-card-content">
             ${post.post}
             <div class="repost-card full">
-                <div class="profile">
+                <div class="profile" onclick="openUserProfile('${repostuser.userid}')">
                     <div class="image"><img src="${repostuserpfppath}" alt=""></div>
                     <div class="userinfo">
                         <div class="name">
@@ -158,16 +174,25 @@ notificationsbutton?.addEventListener("click", async () => {
     document.querySelector(".blank-btn.selected")?.classList.remove("selected")
     notificationsbutton.classList.add("selected")
 
+    await readAllUserNotifications()
+    const notificationBanner = document.getElementById("notifs") as HTMLDivElement | any
+    if (notificationBanner == null) return
+    notificationBanner.style.display = "none"
+
     const feedContent = document.querySelector("#feed-content");
     const feedHeader = document.querySelector("#feed-header");
 
-    if (feedHeader == null) return
     if (feedHeader == null || feedContent == null) return
     feedHeader.innerHTML = `<div class="feed-choice"><i class="fa-solid fa-bell"></i> Notifications</div>`;
     feedContent.innerHTML = ""
 
-    const notifications: string | any = await getUserNotifications()
-    console.log(notifications)
+    const notifications: any[] | any = await getUserNotifications()
+    notifications.reverse()
+    for (let i = 0; i < notifications.length; i++) {
+        const notification = notifications[i];
+        const notificationHtml = await SemaNotification.notify(notification.type, notification.taguserid, notification.time)
+        feedContent.innerHTML += notificationHtml
+    }
 })
 
 const searchbutton = document.querySelector<HTMLButtonElement>("#search-btn");
@@ -185,6 +210,25 @@ searchbutton?.addEventListener("click", () => {
 
 const userProfileButton = document.querySelector<HTMLButtonElement>("#user-profile-btn");
 userProfileButton?.addEventListener("click", () => window.location.assign("/myprofile"))
+
+
+async function openUserProfile(userid: string) {
+    const feedContent = document.querySelector("#feed-content");
+    if (feedContent == null) return
+    feedContent.innerHTML = userProfileOvw()
+}
+
+async function toggleFollowUser(element: HTMLElement, userid: string) {
+    if (element.classList.contains("follow-btn")) {
+        element.setAttribute("class", "unfollow-btn")
+        element.innerHTML = "Following"
+        await followUser(userid)
+    } else if (element.classList.contains("unfollow-btn")) {
+        element.setAttribute("class", "follow-btn")
+        element.innerHTML = "Follow"
+        await unfollowUser(userid)
+    }
+}
 
 function likebutton(element: HTMLElement) {
     if (element.dataset == null || element.dataset.likes == null) return
@@ -341,18 +385,38 @@ async function loadFeedPostInformation(feedContent: HTMLDivElement, posts: any, 
     })
 }
 
+async function notificationChecker() {
+    const notificationBanner = document.getElementById("notifs") as HTMLDivElement | any
+    if (notificationBanner == null) return
+    const nm: any = await countUserNotifications()
+    if (nm > 0) {
+        notificationBanner.style.display = "flex"
+        notificationBanner.innerHTML = nm
+    } else notificationBanner.style.display = "none"
+}
+
 function loadFeed() {
     $.post("/allposts", {}, async (data, status) => {
         if (data == "fail") return;
+
+        const notificationBanner = document.getElementById("notifs") as HTMLDivElement | any
+        if (notificationBanner == null) return
+        const nm: any = await countUserNotifications()
+        if (nm > 0) {
+            notificationBanner.style.display = "flex"
+            notificationBanner.innerHTML = nm
+        } else notificationBanner.style.display = "none"
+
         const feedContent = document.querySelector<HTMLDivElement>("#feed-content")
         if (feedContent == null) return;
         feedContent.innerHTML = "";
-        const posts: any[] = JSON.parse(data)
 
+        const posts: any[] = JSON.parse(data)
         for (let i = 0; i < posts.length; i++) {
             await loadFeedPostInformation(feedContent, posts, posts[i])
         }
     })
+    setInterval(notificationChecker, 500)
 }
 
-// loadFeed()
+loadFeed()

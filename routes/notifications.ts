@@ -10,6 +10,28 @@ export const notificationsRouter = express.Router()
 notificationsRouter.use(cookieParser())
 
 
+notificationsRouter.post("/countnotifications", (request, response) => {
+    let userid = request.cookies["semauser"] as string | null
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        notificationsDb.find({ receivinguser: userid, read: false }, (data: any, err: any) => {
+            if (!err) response.send(`${data.length}`); else response.send("fail")
+        })
+    }
+})
+
+notificationsRouter.post("/readall", (request, response) => {
+    let userid = request.cookies["semauser"] as string | null
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        notificationsDb.update({ receivinguser: userid, read: false }, {read: true}, true, (data: any, err: any) => {
+            if (!err) response.send("done"); else response.send("fail")
+        })
+    }
+})
+
 notificationsRouter.get("/notifications", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     if (userid == "" || userid == null) {
@@ -33,6 +55,7 @@ notificationsRouter.post("/post", (request, response) => {
                 type: "post",
                 taguserid: userid,
                 receivinguser: postdata.userid,
+                read: false,
                 time: Date.now()
             }
             notificationsDb.insert(newNotification, (data:any, err:any) => {
@@ -54,6 +77,7 @@ notificationsRouter.post("/repost", (request, response) => {
                 type: "repost",
                 taguserid: userid,
                 receivinguser: postdata.userid,
+                read: false,
                 time: Date.now()
             }
             notificationsDb.insert(newNotification, (data:any, err:any) => {
@@ -75,6 +99,7 @@ notificationsRouter.post("/likepost", (request, response) => {
                 type: "like",
                 taguserid: userid,
                 receivinguser: postdata.userid,
+                read: false,
                 time: Date.now()
             }
             notificationsDb.insert(newNotification, (data:any, err:any) => {
@@ -96,6 +121,7 @@ notificationsRouter.post("/commentpost", (request, response) => {
                 type: "comment",
                 taguserid: userid,
                 receivinguser: postdata.userid,
+                read: false,
                 time: Date.now()
             }
             notificationsDb.insert(newNotification, (data:any, err:any) => {
@@ -116,6 +142,7 @@ notificationsRouter.post("/followuser", (request, response) => {
             type: "follow",
             taguserid: userid,
             receivinguser: receivinguserid,
+            read: false,
             time: Date.now()
         }
         notificationsDb.insert(newNotification, (data:any, err:any) => {
@@ -134,6 +161,7 @@ notificationsRouter.post("/unfollowuser", (request, response) => {
             type: "unfollow",
             taguserid: userid,
             receivinguser: receivinguserid,
+            read: false,
             time: Date.now()
         }
         notificationsDb.insert(newNotification, (data:any, err:any) => {

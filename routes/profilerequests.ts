@@ -1,7 +1,7 @@
 import express, { response } from 'express'
 import cookieParser from 'cookie-parser'
 import { UserAuth, Post, PostComment } from '../types/types'
-import { postsDb, usersDb, commentsDb } from '../mydb/db.config.js'
+import { postsDb, usersDb, commentsDb, followersDb } from '../mydb/db.config.js'
 import randomUserId from '../includes/userid.js'
 import randomPostId from '../includes/postid.js'
 import { currentDate, currentTime } from '../includes/date.js'
@@ -45,10 +45,14 @@ profileRequestsRouter.post("/userstats", (request, response) => {
     if (userid == "" || userid == null) {
         response.send("fail")
     } else {
-        postsDb.find({ userid: userid }, (data:any, err:any) => {
-            if (!err) {
-                response.send(JSON.stringify([data.length, 0, 0]))
-            }
+        postsDb.find({ userid: userid }, (data: any, err: any) => {
+            followersDb.find({ following: userid }, (data1: any, err1: any) => {
+                followersDb.find({ userid: userid }, (data2: any, err2: any) => {
+                    if (!err && !err1 && !err2) {
+                        response.send(JSON.stringify([data.length, data1.length, data2.length]))
+                    }
+                })
+            })
         })
     }
 })

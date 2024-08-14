@@ -8,6 +8,7 @@ import { indexRequestsRouter } from './routes/indexrequests.js'
 import { mainPagesRouter } from './routes/pages.js'
 import { profileRequestsRouter } from './routes/profilerequests.js'
 import { notificationsRouter } from './routes/notifications.js'
+import { followStatesRouter } from './routes/followstates.js'
 
 const app = express()
 
@@ -22,5 +23,6 @@ app.use("/", logonRouter)
 app.use("/", indexRequestsRouter)
 app.use("/", profileRequestsRouter)
 app.use("/notify", notificationsRouter)
+app.use("/follow", followStatesRouter)
 
 app.listen(80)

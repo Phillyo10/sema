@@ -199,6 +199,7 @@ body .feed {
     display: flex;
     padding: 8px;
     gap: 10px;
+    cursor: pointer;
 }
 
 .feed .feed-content .feed-card .feed-owner .image {
@@ -228,7 +229,12 @@ body .feed {
     align-items: end;
     justify-content: start;
     font-size: 1.15rem;
-    font-weight: 600;
+    font-weight: 700;
+    transition: all 0.1s
+}
+
+.feed .feed-content .feed-card .feed-owner .userinfo:hover .name {
+    font-weight: 850;
 }
 
 .feed .feed-content .feed-card .feed-owner .userinfo .username {
@@ -290,7 +296,8 @@ body .feed {
     height: 6vh;
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 10px;
+    cursor: pointer;
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .profile .image {
@@ -308,7 +315,7 @@ body .feed {
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo {
-    width: 80%;
+    width: 70%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -324,6 +331,11 @@ body .feed {
     align-items: end;
     gap: 5px;
     font-weight: 700;
+    transition: all 0.1s
+}
+
+.feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo:hover .name {
+    font-weight: 850;
 }
 
 .feed .feed-content .feed-card .feed-card-content .repost-card .profile .userinfo .username {
@@ -541,6 +553,7 @@ body .feed {
     width: 100%;
     height: 6vh;
     padding: 6px;
+    cursor: pointer;
 }
 
 .feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .image {
@@ -563,6 +576,10 @@ body .feed {
     display: flex;
     flex-direction: column;
     font-size: 0.9rem;
+}
+
+.feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .userinfo:hover .name {
+    font-weight: 850;
 }
 
 .feed .feed-content .feed-card.opencomments .feed-comments .feed-comment .comment-owner .userinfo > div {
@@ -601,6 +618,7 @@ body .feed {
     border: 1px solid #f3f3f3;
     transition: all 0.2s;
     cursor: pointer;
+    user-select: none;
 }
 
 .feed .feed-content .user-card:hover {
@@ -653,19 +671,6 @@ body .feed {
     gap: 5px;
     align-items: center;
     color: #363636;
-}
-
-.feed-content .user-card .follow-action {
-    height: 100%;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-}
-
-.feed-content .user-card .follow-action button {
-    height: fit-content;
-    width: fit-content;
 }
 
 .feed .feed-content .notification {
@@ -754,7 +759,7 @@ body .feed {
 
 .feed .feed-content .profileovw {
     width: 100%;
-    height: 80vh;
+    height: 45vh;
     padding: 20px;
     background-color: white;
     border-radius: 20px;
