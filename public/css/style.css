@@ -959,6 +959,14 @@ body .feed {
         font-weight: 750;
     }
 
+    .app .userinfo .name i {
+        display: none;
+    }
+    
+    .app .userinfo .name.verfied i {
+        display: contents;
+    }
+
     .app .buttons {
         flex-grow: 1;
         display: flex;

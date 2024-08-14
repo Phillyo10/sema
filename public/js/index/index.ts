@@ -28,7 +28,7 @@ let userProfileSearch = (user: UserAuth, userpfp: string) => {
     <div class="user-card" onclick="openUserProfile('${user.userid}')">
         <div class="image"><img src="${userpfp}" alt=""></div>
         <div class="userinfo">
-            <div class="name">${user.dname}</div>
+            <div class="name">${user.dname} ${(user.verified) ? `<i class="bi bi-patch-check-fill"></i>`: ''}</div>
             <div class="username">@${user.username}</div>
         </div>
     </div>`;
@@ -36,6 +36,13 @@ let userProfileSearch = (user: UserAuth, userpfp: string) => {
 }
 
 let userProfileOvw = async (feedContent: HTMLElement, user: UserAuth, userpfp: string, userstats: any[], usercheck: boolean) => {
+    let isfollowinguser: object | any = await isFollowing(user.userid)
+    let followingButton = ""
+    if (usercheck) {
+        followingButton = `<button class="regular-btn" onclick="openMyProilePage()">My Profile</button>`
+    } else {
+        followingButton = (isfollowinguser.userid == null || isfollowinguser.userid == undefined) ? `<button class="follow-btn" onclick="toggleFollowUser(this, '${user.userid}')">Follow</button>` : `<button class="unfollow-btn" onclick="toggleFollowUser(this, '${user.userid}')">Following</button>`
+    }
     let html = `
     <div class="profileovw">
         <div class="profile-bg"><img src="${userpfp}" id="pfp" alt="User Profile Picture"></div>
@@ -52,7 +59,7 @@ let userProfileOvw = async (feedContent: HTMLElement, user: UserAuth, userpfp: s
                 <div class="stat"><span class="value">${userstats[1]}</span> Followers</div>
                 <div class="stat"><span class="value">${userstats[2]}</span> Following</div>
             </div><br>
-            ${(!usercheck) ? `<button class="follow-btn" onclick="toggleFollowUser(this, '${user.userid}')">Follow</button>` : `<button class="regular-btn" onclick="openMyProilePage()">My Profile</button>`}
+            ${followingButton}
         </div>
     </div>`;
     feedContent.innerHTML = html
@@ -380,7 +387,7 @@ async function opencomments(element: HTMLElement) {
 
 async function loadFeedPostInformation(feedContent: HTMLDivElement, posts: any, looppost: any) {
     return new Promise((resolve) => {
-        $.post("/getuser", { userid: looppost.userid }, (userdata, status) => {
+        $.post("/getuser", { userid: looppost.userid }, async (userdata, status) => {
             if (userdata == "fail") return;
 
             const user: UserAuth = JSON.parse(userdata)
@@ -392,7 +399,8 @@ async function loadFeedPostInformation(feedContent: HTMLDivElement, posts: any, 
             let userliked: boolean = false
             for (let i = 0; i < post.likes.length; i++) {
                 const user = post.likes[i];
-                if (user.userid == post.loggedinuser) {
+                const checkUser = await isLoggedOnUser(user.userid)
+                if (checkUser) {
                     userliked = true
                     break;
                 } else userliked = false
@@ -408,10 +416,12 @@ async function loadFeedPostInformation(feedContent: HTMLDivElement, posts: any, 
                     const repost: any = await getPost(post.repostid)
                     const repostuser: any = await getUser(repost.userid)
                     const repostuserpfppath: any = await getUserPfp(repost.userid)
+                    const userreposted: boolean | any = await userReposted(post.postid)
 
-                    feedContent.innerHTML += repostHtml(user, post, pfppath, [likes, comments, reposts], userliked, true, repost, repostuser, repostuserpfppath)
+                    feedContent.innerHTML += repostHtml(user, post, pfppath, [likes, comments, reposts], userliked, userreposted, repost, repostuser, repostuserpfppath)
                 } else {
-                    feedContent.innerHTML += postHtml(user, post, pfppath, [likes, comments, reposts], userliked, false)
+                    const userreposted: boolean | any = await userReposted(post.postid)
+                    feedContent.innerHTML += postHtml(user, post, pfppath, [likes, comments, reposts], userliked, userreposted)
                 }
             })
 

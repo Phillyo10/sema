@@ -6,6 +6,14 @@ async function isLoggedOnUser(userid: string) {
     })
 }
 
+async function isFollowing(following: string) {
+    return new Promise((resolve) => {
+        $.post(`/follow/isfollowing/${following}`, {}, (data, status) => {
+            if (data) resolve(data); else resolve(false)
+        })
+    })
+}
+
 async function getPost(postid: string) {
     return new Promise((resolve) => {
         $.post(`/getpost/${postid}`, {}, (data, status) => {
@@ -43,6 +51,14 @@ async function searchUsers(searchquery: string) {
     return new Promise((resolve) => {
         $.post(`/searchusers`, { query: searchquery }, (data, status) => {
             resolve(JSON.parse(data))
+        })
+    })
+}
+
+async function userReposted(postid: string) {
+    return new Promise((resolve) => {
+        $.post(`/userreposted/${postid}`, {}, (data, status) => {
+            if (data.userid == null || data.userid == undefined) resolve(false); else resolve(true)
         })
     })
 }

@@ -35,6 +35,18 @@ indexRequestsRouter.post("/checkuid", (request, response) => {
     }
 })
 
+indexRequestsRouter.post("/userreposted/:postid", (request, response) => {
+    let userid = request.cookies["semauser"] as string | null
+    let postid = request.params.postid
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        postsDb.findOne({ repost: true, repostid: postid, userid: userid }, (data: any, err: any) => {
+            if (!err) response.send(data); else response.send("fail")
+        })
+    }
+})
+
 indexRequestsRouter.post("/allposts", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     if (userid == "" || userid == null) {

@@ -77,7 +77,6 @@ const editProfilePictureButton = document.querySelector<HTMLDivElement>("#editpf
 editProfilePictureButton?.addEventListener("click", async () => {
     await getuserpfp().then((data: any) => {
         let modal = new ProfilePictureModal(data).show((value: string) => {
-            console.log(value)
             $.post("/updatepfp", { image: value }, async (data, status) => {
                 if (data !== "fail") AlertMsg.show("good", "Updated Profile Picture!"); else AlertMsg.show("bad", "Failed to update profile picture")
                 await loadUserStats()
