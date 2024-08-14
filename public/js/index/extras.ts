@@ -33,7 +33,7 @@ async function getUserPfp(userid: string) {
 // PFF means Posts Followers Following
 async function getUserPFFStats(userid: string) {
     return new Promise((resolve) => {
-        $.post(`/userstats`, { userid: userid }, (data, status) => {
+        $.post(`/userstatsc`, { userid: userid }, (data, status) => {
             resolve(JSON.parse(data))
         })
     })
@@ -41,7 +41,7 @@ async function getUserPFFStats(userid: string) {
 
 async function searchUsers(searchquery: string) {
     return new Promise((resolve) => {
-        $.post(`/getuser`, { query: searchquery }, (data, status) => {
+        $.post(`/searchusers`, { query: searchquery }, (data, status) => {
             resolve(JSON.parse(data))
         })
     })

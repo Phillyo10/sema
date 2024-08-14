@@ -60,7 +60,7 @@ indexRequestsRouter.post("/allposts", (request, response) => {
 })
 
 indexRequestsRouter.post("/alluserposts", (request, response) => {
-    let userid = request.cookies["semauser"] as string | null
+    let userid = request.body.userid as string | null
     if (userid == "" || userid == null) {
         response.send("fail")
     } else {
@@ -230,6 +230,10 @@ indexRequestsRouter.post("/searchusers", (request, response) => {
     if (userid == "" || userid == null) {
         response.send("fail")
     } else {
-        
+        usersDb.search({ username: searchquery, dname: searchquery }, (data:any, err:any) => {
+            if (!err) {
+                response.send(JSON.stringify(data));
+            } else response.send("fail")
+        })
     }
 })

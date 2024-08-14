@@ -23,6 +23,18 @@ type PostComment = {
     comment: string
 }
 
+let userProfileSearch = (user: UserAuth, userpfp: string) => {
+    let html = `
+    <div class="user-card" onclick="openUserProfile('${user.userid}')">
+        <div class="image"><img src="${userpfp}" alt=""></div>
+        <div class="userinfo">
+            <div class="name">${user.dname}</div>
+            <div class="username">@${user.username}</div>
+        </div>
+    </div>`;
+    return html
+}
+
 let userProfileOvw = async (feedContent: HTMLElement, user: UserAuth, userpfp: string, userstats: any[], usercheck: boolean) => {
     let html = `
     <div class="profileovw">
@@ -205,7 +217,23 @@ searchbutton?.addEventListener("click", () => {
     if (feedHeader == null || feedContent == null) return
     feedHeader.innerHTML = `<input type="search" name="search" id="search-box" autocomplete="off" placeholder="What are you looking for? 👀">`;
     feedContent.innerHTML = ""
-    document.querySelector<HTMLInputElement>("#search-box")?.focus()
+    
+    const searchBox = document.querySelector<HTMLInputElement>("#search-box")
+    if (searchBox == null) return
+    searchBox.focus()
+    searchBox.addEventListener("keyup", async () => {
+        feedContent.innerHTML = ""
+        const searchvalue = searchBox.value
+        const results: any[] | any = await searchUsers(searchvalue)
+        for (let i = 0; i < results.length; i++) {
+            const user: UserAuth = results[i];
+            const loggedinuser: boolean | any = await isLoggedOnUser(user.userid)
+            if (loggedinuser) continue; else {
+                const userpfp: string | any = await getUserPfp(user.userid)
+                feedContent.innerHTML += userProfileSearch(user, userpfp)
+            }
+        }
+    })
 })
 
 const openMyProilePage = () => { window.location.assign("/myprofile") }
@@ -222,7 +250,7 @@ async function openUserProfile(userid: string) {
     const userpfp: string | any = await getUserPfp(userid)
     const checkUser: boolean | any = await isLoggedOnUser(userid)
     await userProfileOvw(feedContent, user, userpfp, userPffStats, checkUser)
-    await loadUserPosts()
+    await loadUserPosts(user.userid)
 }
 
 async function toggleFollowUser(element: HTMLElement, userid: string) {
@@ -402,8 +430,8 @@ async function notificationChecker() {
     } else notificationBanner.style.display = "none"
 }
 
-function loadUserPosts() {
-    $.post("/alluserposts", {}, async (data, status) => {
+function loadUserPosts(userid: string) {
+    $.post("/alluserposts", { userid: userid }, async (data, status) => {
         if (data == "fail") return;
 
         const feedContent = document.querySelector<HTMLDivElement>("#feed-content")

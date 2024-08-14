@@ -57,6 +57,23 @@ profileRequestsRouter.post("/userstats", (request, response) => {
     }
 })
 
+profileRequestsRouter.post("/userstatsc", (request, response) => {
+    let userid = request.body.userid as string | null
+    if (userid == "" || userid == null) {
+        response.send("fail")
+    } else {
+        postsDb.find({ userid: userid }, (data: any, err: any) => {
+            followersDb.find({ following: userid }, (data1: any, err1: any) => {
+                followersDb.find({ userid: userid }, (data2: any, err2: any) => {
+                    if (!err && !err1 && !err2) {
+                        response.send(JSON.stringify([data.length, data1.length, data2.length]))
+                    }
+                })
+            })
+        })
+    }
+})
+
 profileRequestsRouter.post("/getuserpfp", (request, response) => {
     let userid = request.cookies["semauser"] as string | null
     if (userid == "" || userid == null) {
